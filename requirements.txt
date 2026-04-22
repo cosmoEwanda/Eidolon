@@ -1,0 +1,7 @@
+Pillow
+reportlab
+requests>=2.31
+pandas>=2.0
+jinja2
+pyinstaller
+pytest-qt

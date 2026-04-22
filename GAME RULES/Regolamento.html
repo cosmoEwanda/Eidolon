@@ -1,0 +1,330 @@
+https://www.programiz.com/html/online-compiler/
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Regolamento Ufficiale: Eidolon</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 900px;
+            margin: auto;
+            padding: 40px 20px;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        nav {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        nav h3 {
+            margin-top: 0;
+            color: #2c3e50;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #e67e22;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+        }
+
+        h2 {
+            color: #e67e22;
+            margin-top: 40px;
+            border-left: 5px solid #e67e22;
+            padding-left: 15px;
+            text-transform: uppercase;
+            font-size: 1.5em;
+        }
+
+        h3 {
+            color: #d35400;
+            margin-top: 25px;
+        }
+
+        section {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        strong {
+            color: #d35400;
+        }
+
+        .nota {
+            background: #fff3cd;
+            padding: 15px;
+            border-left: 5px solid #ffeeba;
+            margin: 20px 0;
+            font-style: italic;
+        }
+
+        ul,
+        ol {
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 4px;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.9em;
+            color: #777;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Regolamento Ufficiale Eidolon</h1>
+        <p><em>Versione 1.0 - Ultimo aggiornamento: Aprile 2026</em></p>
+    </header>
+    <nav>
+        <h3>Indice delle Regole</h3>
+        <ul>
+            <li><a href="#introduzione">1. Introduzione</a></li>
+            <li><a href="#componenti">2. Componenti</a></li>
+            <li><a href="#architettura-tabellone">3. Architettura del tabellone</a></li>
+            <li><a href="#setup">4. Preparazione</a></li>
+            <li><a href="#mana">5. Risorse</a></li>
+            <li><a href="#carte">6. Tipi di Carte</a></li>
+	    <li><a href="#statistiche-incarnati">7. Analisi tecnica degli incarnati </a> </li>
+	    <li><a href="#meccaniche-battaglia">8.Dinamiche di combattimento </a></li>
+            <li><a href="#turno">9. Svolgimento Turno</a></li>
+            <li><a href="#vincoli">10. Note Tecniche</a></li>
+	    <li><a href="#glossario"> Glossario </a></li>
+        </ul>
+    </nav>
+    <section id="introduzione">
+        <h2>1. Introduzione</h2>
+        <p>Eidolon è un gioco di strategia competitivo in cui i giocatori evocano potenti entità e utilizzano arti mistiche per distruggere i Varchi avversari.</p>
+    </section>
+
+    <section id="componenti">
+        <h2>2. Componenti</h2>
+        <ul>
+            <li><strong>1</strong> Mazzo da 48 carte</li>
+            <li><strong>3</strong> Carte Varco per giocatore</li>
+            <li><strong>5</strong> Dadi (per tracciamento mana Gemme e contatori)</li>
+            <li><strong>4</strong> Segnalini giocatore</li>
+            <li><strong>15</strong> Carte Runa per giocatore</li>
+        </ul>
+    </section>
+
+    <section id="architettura-tabellone">
+        <h2>3. Architettura del Tabellone</h2>
+        <p>Il campo di battaglia non è solo fisico, ma si articola in tre piani logici distinti:</p>
+
+        <div class="area-box">
+            <h3>A. Area delle Risorse (Area del Mana)</h3>
+            <p>Questa è la porzione dei Tabellone in cui sono riposte le risorse che il giocatore può sfruttare per giocare le sue carte. Le risorse predefinite dal gioco sono le <strong> Rune</strong> e le <strong> Gemme</strong>, ma è possibile che certe strategie o mazzi propongano ulteriori risorse da gestire;</p>
+        </div>
+
+        <div class="area-box">
+            <h3>B. Area di Gioco</h3>
+            <ul>
+                <li><strong>Zona del Grimorio:</strong> Il deck attivo.</li>
+                <li><strong>Zona della Mano:</strong> Carte non ancora generate.</li>
+                <li><strong>Fascia dei Varchi:</strong> Segmento dedicato ai Varchi; ogni carta occupa una specifica Zona di Fascia.</li>
+                <li><strong>Fascia dei Permanenti (Campo di Battaglia):</strong> Destinata alle carte con permanenza illimitata (Incarnati, Sigilli, Aure).</li>
+                <li><strong>Zona dell'Oblio:</strong> Punto di approdo per carte rimosse, distrutte o risolte.</li>
+            </ul>
+        </div>
+
+        <div class="area-box">
+            <h3>C. Area Virtuale (Buffer di Eventi)</h3>
+            <p>Questa zona gestisce lo stato transitorio delle carte prima della loro collocazione definitiva:</p>
+            <ul>
+                <li><strong>Zona di Risoluzione:</strong> Ospita le carte a permanenza limitata mentre applicano la propria <strong>Abilità</strong>.</li>
+                <li><strong>Zona di Generazione/Rigenerazione:</strong> Si attiva alla dichiarazione di ingresso in gioco (dalla Mano o dall'Oblio). Determina il passaggio dei Permanenti verso la Fascia dedicata e delle Temporanee verso la Risoluzione.</li>
+            </ul>
+            <p>Il posizionamento interno alle fasce è arbitrario per comodità del giocatore.</p>
+        </div>
+    </section>
+
+    <section id="setup">
+        <h2>4. Preparazione (Setup)</h2>
+        <p>Posizionare il <strong>Grimorio</strong> alla propria destra con l'<strong>Oblio</strong> subito sopra. Disporre i 3 <strong>Varchi</strong> orizzontalmente in linea con il mazzo. Le 15 <strong>Rune</strong> vanno a destra del mazzo. Utilizzare un dado esterno all'area di gioco per tracciare le <strong>Gemme</strong>.</p>
+    </section>
+
+    <section id="mana">
+        <h2>5. Risorse (Mana)</h2>
+        <p>Esistono due tipi di risorse, indicate in alto a sinistra su ogni carta (eccetto i Varchi):</p>
+        <ul>
+            <li><strong>Rune (Rombo):</strong> Cumulativo e conservativo. Aumentano di 1 ogni turno (max 15). Lo speso si recupera il turno dopo.</li>
+            <li><strong>Gemme (Diamante):</strong> Non cumulativo e conservativo. Ogni turno si ricaricano a <strong>6</strong>.</li>
+        </ul>
+    </section>
+
+    <section id="carte">
+        <h2>6. Tipi di Carte</h2>
+        <h3>A. Varchi</h3>
+        <p>Ogni <strong> Varco </strong> è caratterizzato da una propria lista di <strong>Ordini</strong> attivi, da un'Abilità e da un indicatore della sua salute, detta <strong> Energia</strong>. Gli Ordini rappresentano un vincolo di generazione per tutte le altre carte: se una carta non condivide almeno un Ordine con il Varco attivo, allora non può essere giocata dalla Mano (ma può essere giocata da tutte le altre zone); al contrario, se essa condivide almeno un ordine con il Varco allora può essere generata compatibilmente con il costo in Mana richiesto. I Varchi sono un tipo di carta disponibile a inizio partita, non hanno costo, e rappresentano la risorsa da difendere. Quando l'Energia del Varco arriva a 0, viene distrutto e i suoi Ordini non sono più attivi. Il Varco distrutto non è posto nell'Oblio, ma viene girato a faccia in giù nella Fascia dei Varchi.</p>
+
+        <h3>B. Incarnati (Guardiani e Sentinelle)</h3>
+        <p>Le unità combattenti. Hanno tre statistiche chiave:</p>
+        <ul>
+            <li><strong>Forza (▲):</strong> Danno ai Varchi (permanente) o agli Incarnati (temporaneo).</li>
+            <li><strong>Tenacia (⬢):</strong> Danno permanente agli Incarnati. Non colpisce i Varchi.</li>
+            <li><strong>Astuzia (●):</strong> Capacità di eludere le difese o intercettare.</li>
+        </ul>
+        <p> Quando un Incarnato dichiara un attacco si <strong>Consuma</strong>, ovvero viene posto in orizzontale a indicare che ha effettuato un attacco. Sarà possibile <strong>Ricaricarlo</strong> solo al turno seguente, pagando un costo in Gemme.</p>
+        <div class="nota">
+            Un Incarnato appena generato non può attaccare subito. Il limite massimo è di 5 Incarnati in campo.
+        </div>
+
+        <h3>C. Mistiche</h3>
+        <ul>
+            <li><strong>Alchemisi:</strong> Effetti temporanei (Rituali, Normali o Rapide). Nel primo caso è possibile giocare la carta solo durante il proprio turno e non può essere attivata in risposta ad altri eventi, Abilità o carte; nel secondo caso è possibile attivare la carta solo nel proprio turno e può essere utilizzata anche in combinazione con altri eventi, carte o Abilità; mentre nel terzo e ultimo caso è possibile attivare la carta durante il turno di qualsiasi giocatore e possono essere usate in risposta ad altri eventi, Abilità o carte.</li>
+          
+            <li><strong>Sigilli:</strong> Permanenti in campo. Non attaccano, ma possono avere effetti molto utili.</li>
+            <li><strong>Auree:</strong> Si equipaggiano ad altre carte per potenziarle.</li>
+        </ul>
+    </section>
+
+    <section id="statistiche-incarnati">
+        <h2>7. Analisi Tecnica degli Incarnati</h2>
+        <p>Le interazioni belliche sono regolate da vettori statistici specifici:</p>
+        <ul>
+            <li><strong>Forza (▲):</strong> Magnitudo del danno diretto al Varco (permanente) o agli Incarnati in fase di intercettazione (temporaneo, si ripristina a fine turno).</li>
+            <li><strong>Tenacia (⬢):</strong> Vettore di danno erosivo. Infligge danni permanenti solo ad altri Incarnati. <em>Inutilizzabile contro i Varchi.</em></li>
+            <li><strong>Astuzia (●):</strong> Modificatore di intercettazione. Un'unità non può essere intercettata se la sua Astuzia è superiore a quella del difensore.
+                <div class="tech-note"><strong>Calcolo Corale:</strong> In caso di difesa multipla, i valori di Astuzia dei difensori si sommano per soddisfare la soglia di intercettazione.</div>
+            </li>
+        </ul>
+    </section>
+
+    <section id="meccaniche-battaglia">
+        <h2>8. Dinamiche di Combattimento</h2>
+      <div class="nota">
+        <strong> Importante: </strong> in un attacco, un Incarnato difensore può intercettare al più un Incarnato attaccante, mentre un Incarnato attaccante può essere intercettato da più di un Incarnato difensore (scontro corale).
+      </div>
+
+        <h3>Modalità Forza (Target: Varco)</h3>
+        <p>L'attacco mira all'Energia del Varco Sincronizzato (Attivo). Se non intercettato, il danno è diretto. In caso di scontro, lo scambio di Forza è simultaneo.</p>
+      <ul>
+        <li> <strong> Risoluzione temporanea: </strong> Il danno inflitto con Forza agli Incarnati si ripristina al termine del turno, mentre permane quello inflitto all'Energia del Varco Sincronizzato.</li>
+      </ul>
+        <div class="tech-note"><strong>Scontro Corale:</strong> L'attaccante distribuisce la propria Forza (min. 1 per bersaglio) tra i difensori, ma riceve la somma totale della loro Forza.</div>
+
+        <h3>Modalità Tenacia (Target: Incarnato Consumato)</h3>
+        <p>Richiede la presenza di Incarnati <strong>Consumati</strong> (in posizione orizzontale). Mira alla distruzione della presenza nemica sul campo.</p>
+        <ul>
+            <li><strong>Protezione Specifica:</strong> Solo i <strong>Guardiani</strong> possono intercettare attacchi in modalità Tenacia.</li>
+            <li><strong>Risoluzione Permanente:</strong> Il danno riduce i valori di salute dell'Incarnato in modo definitivo.</li>
+        </ul>
+            <p>
+                L’attacco si apre con una dichiarazione simultanea in cui definisci chiaramente quali dei tuoi Incarnati assumeranno il ruolo di attaccanti e quali saranno i loro bersagli specifici. In questa fase la difesa avversaria è limitata, poiché soltanto i Guardiani hanno la facoltà di intervenire per proteggere i propri compagni: se un Guardiano decide di intercettare un assalitore, lo scontro viene deviato e le due carte risolvono immediatamente un confronto diretto scambiandosi danni pari ai rispettivi valori di Tenacia.
+            </p>
+            <p>
+                Qualora invece i tuoi attaccanti riescano a raggiungere il bersaglio senza essere intercettati, la risoluzione si fa più brutale. Il difensore subisce un ammontare di danni pari alla somma complessiva della Tenacia di tutti gli assalitori che lo hanno colpito, ma ha il diritto di rispondere al fuoco prima di soccombere. In questa ritorsione, il bersaglio infligge danni pari al proprio valore di Tenacia distribuendoli a suo piacimento tra le carte che lo hanno assalito; a differenza di altre modalità, qui il difensore non ha il vincolo di dover assegnare almeno un danno a ciascuno, potendo quindi scegliere di concentrare tutta la propria potenza su un unico nemico per garantirne la distruzione.
+
+            </p>
+          
+          <div class="nota">
+            Qualora anche solo una delle statistiche tra Forza e Tenacia dovessere raggiungere lo 0, la carta è da considerarsi distrutta. In campo non possono permanere Incarnati di Forza o Tenacia pari a 0. 
+          </div>
+    </section>
+
+    <section id="turno">
+        <h2>9. Svolgimento del turno</h2>
+        <ol>
+            <li><strong>Fase di Accumulo:</strong> Reset Gemme (6) e incremento Rune (+1 fino a 15). Processo parallelo senza sequenza predefinita.</li>
+            <li><strong>Fase di Acquisizione:</strong> Pesca una carta dalla cima Grimorio. Condizione di sconfitta se è vuoto.</li>
+            <li><strong>Scelta del Varco:</strong> Definizione del <strong>Varco Attivo</strong>. Stabilisce la "Sincronizzazione" e il bersaglio prioritario per l'avversario.</li>
+            <li><strong>Fase Principale:</strong> Generazione, attivazione Talenti/Abilità (Rituali/Normali), Ricarico Incarnati e Sigilli.</li>
+            <li><strong>Fase di Battaglia:</strong> Dichiarazione modalità (Forza/Tenacia) e risoluzione degli scontri.</li>
+            <li><strong>Fase Secondaria:</strong> Generazione Mistiche e Talenti. <em>Limitazione:</em> Divieto di ricarica/generazione Incarnati e Sigilli.</li>
+            <li><strong>Ultima Fase:</strong> Solo Alchemisi Rapide e Abilità reattive.</li>
+        </ol>
+    </section>
+
+    <section id="vincoli">
+        <h2>10. Note tecniche </h2>
+        <div class="warning">
+            <strong>Integrità dell'Oblio:</strong> L'ordine delle carte è immutabile. Il rimescolamento non autorizzato comporta la perdita della partita se genera vantaggio tattico.
+        </div>
+        <p><strong>Protocollo Ordini:</strong> Ogni carta giocata dalla mano deve condividere almeno un <strong>Ordine</strong> con il Varco Attivo. I Varchi sono carte a costo zero, disponibili <em>ab initio</em>, la cui distruzione (Energia = 0) impone la scelta istantanea di un sostituto per mantenere la Sincronizzazione.</p>
+      
+      <p> <strong> Protocollo attivazione Abilità e Talenti </strong>: L'ordine di attivazione di un evento è stabilità dalla velocità dello stesso. In ogni catena di eventi può esisterne solo uno di velocità Rituale, il quale si attiverà sempre per ultimo, in quanto non è possibile attivare Rituali in risposta o in combo ad altri rituali. Discorso leggermente vale per gli eventi Normali (cioè per cui la velocità non è dichiarata): non è possibile attivare eventi Normali in risposta ad altri eventi Normali (se non diversamente dichiarato sulla carta) e comunque non può uscire dalle condizioni dichiarate per quella carta. <strong> Esempio: </strong> immaginiamo di avere 2 carte in campo con effetti Carta1: "quando questa carta viene distrutta, distruggi una carta" e Carta2: "distruggi una carta, riprendi questa carta in mano", non è possibile distruggere Carta2 usando l'effetto di Carta1, perché nel frattempo Carta2 è tornata in mano. Invece, come ultimo caso,è sempre possibile attivare un evento Rapido su un evento Normale. In caso di parità di velocità, l'evento che si realizza per primo è l'ultimo attivato. </p>
+    </section>
+
+<section id="glossario">
+    <h2>Glossario</h2>
+    <ul>
+        <li><h3>A</h3></li>
+<p><strong>Abilità</strong>: rappresenta l'insieme di azioni, eventi o condizioni generate da o da applicare sulla carta. Modificano il modo in cui la carta interagisce con il Campo o con gli eventi del gioco.</p>
+
+        <li><h3>B</h3></li>
+        <li><h3>C</h3></li>
+        <li><h3>D</h3></li>
+        <li><h3>E</h3></li>
+<p><strong> Esiliare </strong>: la carta esiliata cessa di esistere all'interno del gioco e viene posta in una zona separata. Non può essere bersaglio di alcun effetto, evento o condizione attivato dopo il suo esilio. Gli unici effetti che possono far tornare una carta esiliata sono quelli che hanno già definito la condizione di rientro nell'istante esatto in cui l'esilio è avvenuto (es: "Esilia fino alla fine del turno"). 
+        <li><h3>F</h3></li>
+        <li><h3>G</h3></li>
+        <li><h3>H</h3></li>
+        <li><h3>I</h3></li>
+        <li><h3>L</h3></li>
+        <li><h3>M</h3></li>
+        <li><h3>N</h3></li>
+        <li><h3>O</h3></li>
+
+        <li><h3>P</h3></li>
+<p><strong>Personalità</strong>: definisce una categoria di effetti tematici legati all'identità immutabile della carta (una carta "è" la sua Personalità). A differenza dei Talenti, non descrive un effetto standard fisso, ma una classe di meccaniche coerenti con un tema (es. <em>Fortunato</em> indica sempre interazioni con eventi aleatori come dadi o monete). Essendo parte dell'essenza stessa del soggetto, l'effetto descritto dopo il nome della Personalità è irremovibile e non può essere annullato o rimosso da alcun evento, se non tramite la trasformazione della carta (vedi [Trasformazione]).</p>
+        <li><h3>Q</h3></li>
+        <li><h3>R</h3></li>
+        <li><h3>S</h3></li>
+
+        <li><h3>T</h3></li>
+        <p><strong>Talenti</strong>: parole chiave che riassumono e sostituiscono Abilità standardizzate che funzionano allo stesso modo su ogni carta (es. <em>Volare</em>, <em>Furia</em>). Una carta "possiede" un Talento come capacità acquisita; in quanto tale, esso può essere rimosso, aggiunto o annullato a seguito di particolari eventi di gioco.</p>
+	<p><strong>Trasformazione</strong>: indica il mutamento radicale dell'essenza di una carta. Trasformare una carta non equivale a Generarla o Rigenerarla: la nuova forma è considerata come "sempre esistita" nello stato attuale, ereditando la storia della carta precedente ma sovrascrivendone l'identità. Pertanto, non vengono attivati Talenti o Abilità legati all'ingresso in campo o alla generazione di nuove unità. All'atto della Trasformazione, la carta sostituisce integralmente i propri parametri base, Talenti e Personalità con quelli della nuova forma; contestualmente, eventuali danni presenti sulla carta originale vengono azzerati. Al contrario, segnalini, modificatori e Aure di equipaggiamento vengono mantenuti. </p>
+        <li><h3>U</h3></li>
+        <li><h3>V</h3></li>
+        <li><h3>Z</h3></li>
+    </ul>
+</section>
+</body>
+
+</html>

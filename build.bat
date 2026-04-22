@@ -1,0 +1,1 @@
+pyinstaller --noconfirm --onefile --windowed --clean --name "Eidolon" --add-data "assets;assets" src/main_ui.py
