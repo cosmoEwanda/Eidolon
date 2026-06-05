@@ -5,12 +5,16 @@ a = Analysis(
     ['src\\main_ui.py'],
     pathex=[],
     binaries=[],
-    datas=[('assets', 'assets')],
+    datas=[
+        ('assets', 'assets'),
+        ('config.json', '.')  # <-- 1. Include config.json nella cartella radice dell'EXE
+    ],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
-    excludes=[],
+    # <-- 2. Esclude moduli pesanti/test per evitare il blocco nella ricerca delle DLL
+    excludes=['pytest', 'test', 'unittest', 'tkinter.test'],
     noarchive=False,
     optimize=0,
 )
@@ -29,7 +33,7 @@ exe = EXE(
     upx=True,
     upx_exclude=[],
     runtime_tmpdir=None,
-    console=False,
+    console=False,  # Mantiene l'interfaccia grafica senza la finestra nera del terminale sotto
     disable_windowed_traceback=False,
     argv_emulation=False,
     target_arch=None,
