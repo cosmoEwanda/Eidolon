@@ -1,3 +1,78 @@
+import os
+import sys
+import subprocess
+import requests
+from tkinter import Tk, Button, messagebox
+
+# --- CONFIGURAZIONE AUTO-UPDATE ---
+VERSION = "1.0.0"  # <--- Incrementa questo valore ogni volta che fai una nuova release
+REPO = "cosmoEwanda/Eidolon"  # <--- Sostituisci con i tuoi dati reali su GitHub
+
+
+def check_update():
+    """Verifica la presenza di aggiornamenti su GitHub prima di avviare l'interfaccia."""
+    url = f"https://api.github.com/repos/{REPO}/releases/latest"
+    try:
+        response = requests.get(url).json()
+        if "tag_name" not in response:
+            return  # Nessuna release trovata, prosegue normalmente
+
+        latest_version = response["tag_name"].replace("v", "")
+
+        if latest_version != VERSION:
+            # Creiamo una finestra temporanea invisibile per agganciare la messagebox
+            root_temp = Tk()
+            root_temp.withdraw()
+
+            message = (
+                f"È disponibile una nuova versione: v{latest_version}\n"
+                f"Versione attuale: v{VERSION}\n\n"
+                "Vuoi scaricare l'aggiornamento adesso?"
+            )
+
+            chose = messagebox.askyesno("Aggiornamento Disponibile", message, parent=root_temp)
+            root_temp.destroy()
+
+            if chose:  # Se l'utente clicca 'Sì'
+                download_url = response["assets"][0]["browser_download_url"]
+                update(download_url)
+    except Exception as e:
+        print("Errore durante il controllo aggiornamenti:", e)
+
+
+def update(download_url):
+    """Scarica il nuovo exe e lancia lo script batch di sostituzione."""
+    new_exe = "nuovo_update.exe"
+
+    try:
+        r = requests.get(download_url)
+        with open(new_exe, 'wb') as f:
+            f.write(r.content)
+    except Exception as e:
+        root_temp = Tk()
+        root_temp.withdraw()
+        messagebox.showerror("Errore", f"Impossibile scaricare l'aggiornamento: {e}")
+        root_temp.destroy()
+        return
+
+    current_exe = sys.argv[0]
+    batch_script = "update.bat"
+
+    # Crea il file batch che forza la chiusura, sostituisce l'exe e riavvia
+    with open(batch_script, "w") as f:
+        f.write(f"""
+        @echo off
+        taskkill /IM "{os.path.basename(current_exe)}" /F >nul 2>&1
+        timeout /t 1 /nobreak >nul
+        move /y "{current_exe}" "{current_exe}"
+        start "" "{current_exe}"
+        del "%~f0"
+        """)
+
+    subprocess.Popen([batch_script], shell=True)
+    sys.exit()
+
+
 from tkinter import Tk, Button, messagebox
 from src.basic_config.paths import JSON_DIR, DECK_DIR, IMAGES_DIR, CARD_SHEET, ORDER_SHEET, FONT_PATH, ONLINE_IMAGES_DIR
 from src.render import  TextBoxRenderer, AutoFitTextBoxBuilder
@@ -135,6 +210,7 @@ class MainUI(Tk):
 # =========================================================
 
 if __name__ == "__main__":
+    check_update()
     app = MainUI()
     app.mainloop()
 
