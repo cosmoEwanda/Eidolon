@@ -9,7 +9,6 @@ on:
 
 jobs:
   build:
-    # Cambiato da windows-latest a windows-2022 per evitare il bug del server 2025
     runs-on: windows-2022
 
     steps:
@@ -21,21 +20,32 @@ jobs:
     - name: Configura Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.11' # Portato a 3.11, infinitamente più stabile con PyInstaller su CI/CD
+        python-version: '3.11'
         cache: 'pip'
         cache-dependency-path: 'requirements.txt'
 
-    - name: Installa dipendenze
+    - name: Crea l'ambiente virtuale e Installa le dipendenze
       run: |
+        # 1. Crea un ambiente virtuale isolato (venv)
+        python -m venv venv
+        
+        # 2. Attiva il venv per i comandi successivi di questo step
+        .\venv\Scripts\Activate.ps1
+        
+        # 3. Aggiorna pip e installa solo lo stretto necessario nel venv
         python -m pip install --upgrade pip
         pip install pyinstaller requests build
         if (Test-Path requirements.txt) { pip install -r requirements.txt }
+        
+        # Verifica cosa è stato installato (utile per il log)
+        pip list
       env:
         PYTHONPATH: ${{ github.workspace }}
 
-    - name: Compila con PyInstaller usando lo SPEC file
+    - name: Compila con PyInstaller dentro il VENV
       run: |
-        # --clean svuota la cache corrotta dei tentativi precedenti
+        # Attiva il venv anche in questo step ed esegui la compilazione
+        .\venv\Scripts\Activate.ps1
         pyinstaller --clean Eidolon.spec
 
     - name: Archivia Artifact (Scade in 1 settimana)
