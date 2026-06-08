@@ -1,14 +1,14 @@
 name: Compila e Rilascia l'EXE
 
+#on:
+  # push:
+   # tags:
+    #  - 'v*' # Si attiva quando fai il push di un tag (es. v1.0.0)
+
 on:
   push:
-    tags:
-      - 'v*' # Si attiva quando fai il push di un tag (es. v1.0.0)
-
-#on:
- # push:
-  #  branches:
-   #   - main # Si attiva a OGNI push sul ramo main, senza bisogno di tag!
+    branches:
+      - main # Si attiva a OGNI push sul ramo main, senza bisogno di tag!
 jobs:
   build:
     runs-on: windows-latest
