@@ -5,7 +5,7 @@ import requests
 from tkinter import Tk, Button, messagebox
 
 # --- CONFIGURAZIONE AUTO-UPDATE ---
-VERSION = "1.0.0"  # <--- Incrementa questo valore ogni volta che fai una nuova release
+VERSION = "1.0.1"  # <--- Incrementa questo valore ogni volta che fai una nuova release
 REPO = "cosmoEwanda/Eidolon"  # <--- Sostituisci con i tuoi dati reali su GitHub
 
 
