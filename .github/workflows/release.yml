@@ -35,7 +35,7 @@ jobs:
 
     - name: Compila con PyInstaller usando lo SPEC file
       run: |
-        pyinstaller --assume-shared-libs Eidolon.spec
+        pyinstaller Eidolon.spec
 
     - name: Archivia Artifact (Scade in 1 settimana)
       uses: actions/upload-artifact@v4
