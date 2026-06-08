@@ -1,14 +1,12 @@
 name: Compila e Rilascia l'EXE
 
-#on:
-  # push:
-   # tags:
-    #  - 'v*' # Si attiva quando fai il push di un tag (es. v1.0.0)
-
 on:
   push:
     branches:
-      - main # Si attiva a OGNI push sul ramo main, senza bisogno di tag!
+      - main
+    tags:
+      - 'v*' # Si attiva sia su push su main che alla creazione di un tag (es. v1.0.0)
+
 jobs:
   build:
     runs-on: windows-latest
@@ -16,26 +14,40 @@ jobs:
     steps:
     - name: Checkout del codice
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0 # Recupera tutta la cronologia Git (corrisponde a GIT_DEPTH: 0)
 
     - name: Configura Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.10'
-        # Questa riga attiva la cache nativa per pip basandosi su requirements.txt
+        python-version: '3.12' # Versione presa dalla prima parte del tuo script
         cache: 'pip'
         cache-dependency-path: 'requirements.txt'
 
     - name: Installa dipendenze
       run: |
         python -m pip install --upgrade pip
-        pip install pyinstaller requests
-        pip install -r requirements.txt
+        pip install pyinstaller requests build
+        if (Test-Path requirements.txt) { pip install -r requirements.txt }
+      env:
+        # Imposta il PYTHONPATH in ambiente Windows (corrisponde a export PYTHONPATH)
+        PYTHONPATH: ${{ github.workspace }}
 
     - name: Compila con PyInstaller usando lo SPEC file
       run: |
         pyinstaller --assume-shared-libs Eidolon.spec
 
+    - name: Archivia Artifact (Scade in 1 settimana)
+      uses: actions/upload-artifact@v4
+      with:
+        name: Eidolon-dist
+        path: dist/
+        retention-days: 7 # Corrisponde a expire_in: 1 week
+
     - name: Crea Release e carica l'EXE
+      # Questo step viene eseguito SOLO se stai pushando un tag (es. v1.0.0)
+      # Evita che il workflow fallisca quando fai un normale push su main
+      if: startsWith(github.ref, 'refs/tags/')
       uses: softprops/action-gh-release@v2
       with:
         files: dist/Eidolon.exe
