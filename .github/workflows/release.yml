@@ -1,64 +1,39 @@
-name: Compila e Rilascia l'EXE
+name: Build & Release
 
 on:
   push:
-    branches:
-      - main
     tags:
       - 'v*'
 
+permissions:
+  contents: write
+
 jobs:
   build:
-    runs-on: windows-2022
+    runs-on: windows-latest
 
     steps:
-    - name: Checkout del codice
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
+      - uses: actions/checkout@v4
 
-    - name: Configura Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
-        cache: 'pip'
-        cache-dependency-path: 'requirements.txt'
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
 
-    - name: Crea l'ambiente virtuale e Installa le dipendenze
-      run: |
-        # 1. Crea un ambiente virtuale isolato (venv)
-        python -m venv venv
-        
-        # 2. Attiva il venv per i comandi successivi di questo step
-        .\venv\Scripts\Activate.ps1
-        
-        # 3. Aggiorna pip e installa solo lo stretto necessario nel venv
-        python -m pip install --upgrade pip
-        pip install pyinstaller requests build
-        if (Test-Path requirements.txt) { pip install -r requirements.txt }
-        
-        # Verifica cosa è stato installato (utile per il log)
-        pip list
-      env:
-        PYTHONPATH: ${{ github.workspace }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-    - name: Compila con PyInstaller dentro il VENV
-      run: |
-        # Attiva il venv anche in questo step ed esegui la compilazione
-        .\venv\Scripts\Activate.ps1
-        pyinstaller --clean Eidolon.spec
+      - name: Build with PyInstaller
+        run: |
+          pyinstaller --noconfirm --onefile --windowed --clean `
+            --name "Eidolon" `
+            --add-data "assets;assets" `
+            --add-data "config.json;." `
+            src/main_ui.py
 
-    - name: Archivia Artifact (Scade in 1 settimana)
-      uses: actions/upload-artifact@v4
-      with:
-        name: Eidolon-dist
-        path: dist/
-        retention-days: 7
-
-    - name: Crea Release e carica l'EXE
-      if: startsWith(github.ref, 'refs/tags/')
-      uses: softprops/action-gh-release@v2
-      with:
-        files: dist/Eidolon.exe
-      env:
-        GITHUB_TOKEN: ${{ secrets.EIDOLON_TOKEN }}
+      - name: Upload EXE to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/Eidolon.exe
