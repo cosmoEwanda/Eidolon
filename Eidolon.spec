@@ -9,12 +9,12 @@ a = Analysis(
         ('assets', 'assets'),
         ('config.json', '.')  # <-- 1. Include config.json nella cartella radice dell'EXE
     ],
-    hiddenimports=[],
+    hiddenimports=['playwright.sync_api', 'playwright.async_api'],
     hookspath=[],
-    hooksconfig={},
+    hooksconfig={'setuptools': {'vendor': False}},
     runtime_hooks=[],
     # <-- 2. Esclude moduli pesanti/test per evitare il blocco nella ricerca delle DLL
-    excludes=['pytest', 'test', 'unittest', 'tkinter.test', 'pygments', 'matplotlib', 'scipy', 'cv2'],
+    excludes=['pytest', 'test', 'unittest', 'tkinter.test', 'pygments', 'matplotlib', 'scipy', 'cv2', 'setuptools', 'pip', 'distutils'],
     noarchive=False,
     optimize=0,
 )

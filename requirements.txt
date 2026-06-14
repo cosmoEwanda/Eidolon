@@ -5,3 +5,4 @@ pandas>=2.0
 jinja2
 pyinstaller
 pytest-qt
+playwright
