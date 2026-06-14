@@ -14,7 +14,7 @@ a = Analysis(
     hooksconfig={},
     runtime_hooks=[],
     # <-- 2. Esclude moduli pesanti/test per evitare il blocco nella ricerca delle DLL
-    excludes=['pytest', 'test', 'unittest', 'tkinter.test'],
+    excludes=['pytest', 'test', 'unittest', 'tkinter.test', 'pygments', 'matplotlib', 'scipy', 'cv2'],
     noarchive=False,
     optimize=0,
 )
