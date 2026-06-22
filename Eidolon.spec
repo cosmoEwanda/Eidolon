@@ -11,10 +11,10 @@ a = Analysis(
     ],
     hiddenimports=[],
     hookspath=[],
-    hooksconfig={'setuptools': {'vendor': False}},
-    runtime_hooks=[],
+    hooksconfig={'setuptools': {'vendor': False}'setuptools': {'vendor': False}},
     # <-- 2. Esclude moduli pesanti/test per evitare il blocco nella ricerca delle DLL
-    excludes=['pytest', 'test', 'unittest', 'tkinter.test', 'pygments', 'matplotlib', 'scipy', 'cv2', 'setuptools', 'pip', 'distutils', 'pkg_resources'],
+    #     Aggiunti setuptools, pip, pkg_resources (causano hang in "Looking for dynamic libraries")
+    excludes=['setuptools', 'pip', 'distutils', 'pkg_resources', 'pytest', 'test', 'unittest', 'tkinter.test', 'pygments', 'matplotlib', 'scipy', 'cv2', 'setuptools', 'pip', 'distutils', 'pkg_resources'],
     noarchive=False,
     optimize=0,
 )
