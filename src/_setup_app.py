@@ -110,6 +110,9 @@ def get_base_layout():
                 CardDefinition.VALID_COSTS[2]: {
                     "pos": (150, 1235),
                     "dim": COST_DIM},
+                CardDefinition.VALID_COSTS[3]: {
+                    "pos": (710, 70),
+                    "dim": COST_DIM},
             }
         },
         "orders_config": {

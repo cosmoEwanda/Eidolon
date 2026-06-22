@@ -2,3 +2,5 @@
 venv/
 calculateDa.py
 test/
+__pycache__/
+*.pyc

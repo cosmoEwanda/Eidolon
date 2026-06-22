@@ -33,10 +33,10 @@ ORDERS = [
 ]
 
 STATS = [
-    "Energia",
-    "Forza",
-    "Tenacia",
-    "Astuzia"
+    "E",
+    "F",
+    "T",
+    "A"
 ]
 
 RARITY = ["Comune", "Raro", "Epico"]
@@ -44,4 +44,4 @@ RARITY = ["Comune", "Raro", "Epico"]
 MANA = ["Gemme", "Rune", "Attivazione"]
 
 
-COSTS = ["Rune", "Gemme", "Gemme R"]
+COSTS = ["RuneG", "GemmeG", "RuneR", "GemmeR"]
