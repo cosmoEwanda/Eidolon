@@ -14,7 +14,9 @@ a = Analysis(
     hooksconfig={'setuptools': {'vendor': False}},
     # <-- 2. Esclude moduli pesanti/test per evitare il blocco nella ricerca delle DLL
     #     setuptools NON in excludes: al suo posto usiamo hooksconfig per gestire i vendor
-    excludes=['pip', 'distutils', 'pkg_resources', 'pytest', 'test', 'unittest', 'tkinter.test', 'pygments', 'matplotlib', 'scipy', 'cv2'],
+    # NOTA: distutils e pkg_resources NON in excludes: gli hook PyInstaller (hook-distutils, hook-setuptools)
+    #       creano alias per questi moduli; escluderli causa ValueError: "already imported as ExcludedModule"
+    excludes=['pip', 'pytest', 'test', 'unittest', 'tkinter.test', 'pygments', 'matplotlib', 'scipy', 'cv2'],
     noarchive=False,
     optimize=0,
 )
