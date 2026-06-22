@@ -82,3 +82,9 @@ ORDER_SHEET = (
     "100c4Gp3yjAmLCyOeEHHjHPsrNtzn0xS--xkqfDNuBdQ/"
     "export?format=csv&gid=436643684"
 )
+
+COST_SHEET = (
+    "https://docs.google.com/spreadsheets/d/"
+    "100c4Gp3yjAmLCyOeEHHjHPsrNtzn0xS--xkqfDNuBdQ/"
+    "export?format=csv&gid=1924022885"
+)

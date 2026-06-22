@@ -89,7 +89,26 @@ class CardRendererService:
         if costs is not None and key in costs:
             return str(costs[key])
 
+        # 4. Gruppi di costi (top_cost = G, bottom_cost = R)
+        if key == "top_cost":
+            return self._format_cost_group(costs, ["GemmeG", "RuneG"])
+        if key == "bottom_cost":
+            return self._format_cost_group(costs, ["RuneR", "GemmeR"])
+
         return None
+
+    @staticmethod
+    def _format_cost_group(costs, cost_keys):
+        """Costruisce testo con icone inline tipo '[Gemme]×2 [Rune]×3'."""
+        if costs is None:
+            return None
+        parts = []
+        for cost_key in cost_keys:
+            val = costs.get(cost_key)
+            if val is not None and val > 0:
+                icon_name = "Gemme" if "Gemme" in cost_key else "Rune"
+                parts.append(f"[{icon_name}]×{val}")
+        return " ".join(parts) if parts else None
 
     def _draw_element(self, composer, text, rect, style):
         """Metodo puro: riceve dati e disegna, senza cercare chiavi esterne."""

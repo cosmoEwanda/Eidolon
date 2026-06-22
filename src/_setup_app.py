@@ -101,18 +101,12 @@ def get_base_layout():
         "cost_config": {
             "style": STYLES["cost"],
             "elems": {
-                CardDefinition.VALID_COSTS[0]: {
+                "top_cost": {
                     "pos": (140, 70),
-                    "dim": COST_DIM},
-                CardDefinition.VALID_COSTS[1]: {
-                    "pos": (155, 175),
-                    "dim": COST_DIM},
-                CardDefinition.VALID_COSTS[2]: {
+                    "dim": (200, 60)},
+                "bottom_cost": {
                     "pos": (150, 1235),
-                    "dim": COST_DIM},
-                CardDefinition.VALID_COSTS[3]: {
-                    "pos": (710, 70),
-                    "dim": COST_DIM},
+                    "dim": (200, 60)},
             }
         },
         "orders_config": {

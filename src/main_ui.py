@@ -4,6 +4,8 @@ import subprocess
 import requests
 from tkinter import Tk, Button, messagebox
 
+from src.utils.migrate_deck_costs import migrate_deck_costs
+
 # --- CONFIGURAZIONE AUTO-UPDATE ---
 VERSION = "1.0.1"  # <--- Incrementa questo valore ogni volta che fai una nuova release
 REPO = "cosmoEwanda/Eidolon"  # <--- Sostituisci con i tuoi dati reali su GitHub
@@ -74,7 +76,9 @@ def update(download_url):
 
 
 from tkinter import Tk, Button, messagebox
-from src.basic_config.paths import JSON_DIR, DECK_DIR, IMAGES_DIR, CARD_SHEET, ORDER_SHEET, FONT_PATH, ONLINE_IMAGES_DIR
+from src.basic_config.paths import (JSON_DIR, DECK_DIR, IMAGES_DIR,
+                                    CARD_SHEET, ORDER_SHEET, COST_SHEET,
+                                    FONT_PATH, ONLINE_IMAGES_DIR)
 from src.render import  TextBoxRenderer, AutoFitTextBoxBuilder
 from src.persistence import JsonCardStorage, JsonDeckStorage, CardSheetMapper, GoogleDriveCardStorage
 from src.services import CardLoader, ImageRenderSync, CardBasicService, DeckBasicService, CardRendererService
@@ -102,7 +106,7 @@ class MainUI(Tk):
         # 1. Infrastruttura
         json_card_storage = JsonCardStorage(JSON_DIR)
         json_deck_storage = JsonDeckStorage(DECK_DIR)
-        self.database = GoogleDriveCardStorage(CARD_SHEET, ORDER_SHEET)
+        self.database = GoogleDriveCardStorage(CARD_SHEET, ORDER_SHEET, COST_SHEET)
 
         # 2. Repository
         card_repo = CardRepository(json_card_storage)
@@ -211,6 +215,7 @@ class MainUI(Tk):
 
 if __name__ == "__main__":
     check_update()
+    migrate_deck_costs(DECK_DIR, JSON_DIR)
     app = MainUI()
     app.mainloop()
 

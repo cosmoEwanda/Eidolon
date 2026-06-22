@@ -9,13 +9,14 @@ class CardSheetMapper:
     def map(self, raw, art_dir):
         df_cards = raw["cards"]
         df_orders = raw["orders"]
+        df_costs = raw["costs"]
 
         cards = []
 
         for _, r in df_cards.iterrows():
             sinergy = self._extract_sinergy(r)
             orders = self._extract_orders(r, df_orders)
-            cost = self._extract_cost(r)
+            cost = self._extract_cost(r, df_costs)
             stats = self._extract_stats(r)
 
 
@@ -91,10 +92,14 @@ class CardSheetMapper:
 
     # -------------------------
 
-    def _extract_cost(self, r):
+    def _extract_cost(self, r, df_costs):
         cost = {}
+        match = df_costs[df_costs["Id_Carta"] == r["Id_Carta"]]
+        if match.empty:
+            return cost
+        row = match.iloc[0]
         for col in CardDefinition.VALID_COSTS:
-            val = r.get(col)  # Usiamo get per sicurezza
+            val = row.get(col)
             if pd.notna(val) and val != "NULL":
                 try:
                     cost[col] = int(float(val))
