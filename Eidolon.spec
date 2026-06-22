@@ -13,8 +13,8 @@ a = Analysis(
     hookspath=[],
     hooksconfig={'setuptools': {'vendor': False}},
     # <-- 2. Esclude moduli pesanti/test per evitare il blocco nella ricerca delle DLL
-    #     Aggiunti setuptools, pip, pkg_resources (causano hang in "Looking for dynamic libraries")
-    excludes=['setuptools', 'pip', 'distutils', 'pkg_resources', 'pytest', 'test', 'unittest', 'tkinter.test', 'pygments', 'matplotlib', 'scipy', 'cv2'],
+    #     setuptools NON in excludes: al suo posto usiamo hooksconfig per gestire i vendor
+    excludes=['pip', 'distutils', 'pkg_resources', 'pytest', 'test', 'unittest', 'tkinter.test', 'pygments', 'matplotlib', 'scipy', 'cv2'],
     noarchive=False,
     optimize=0,
 )
