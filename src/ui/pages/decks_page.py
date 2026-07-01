@@ -1,6 +1,7 @@
 from tkinter import Frame
 
 from src.ui.tiles import DeckTile, NewDeckTile
+from src.ui._theme import BG_PRIMARY, BG_SECONDARY
 
 
 class DecksPage(Frame):
@@ -9,14 +10,14 @@ class DecksPage(Frame):
     MAX_N_DECKS = 35
 
     def __init__(self, master, deck_service, open_callback, new_callback):
-        super().__init__(master)
+        super().__init__(master, bg=BG_PRIMARY)
 
         self.deck_service = deck_service # Il Repository (non lo Storage!)
         self.open_callback = open_callback
         self.new_callback = new_callback
 
         # Container centrale per le tile
-        self.container = Frame(self)
+        self.container = Frame(self, bg=BG_PRIMARY)
         self.container.pack(padx=20, pady=20)
 
         self.load_decks()

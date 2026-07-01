@@ -1,16 +1,17 @@
 from tkinter import Toplevel, Label
 from PIL import Image, ImageTk
+from src.ui._theme import BG_PRIMARY, BG_SECONDARY, TEXT_PRIMARY, TEXT_SECONDARY, FONT_DEFAULT, FONT_SMALL
 
 
 class CardImageWindow(Toplevel):
     def __init__(self, master, cid):
-        super().__init__(master)
+        super().__init__(master, bg=BG_PRIMARY)
 
         self.title(f"Visualizzatore: {cid}")
-        self.geometry("400x650")  # Aumentato leggermente per far spazio al testo
+        self.geometry("400x650")
 
         # Caricamento e resize immagine
-        img = Image.open(cid)  # Assicurati che cid sia un path valido
+        img = Image.open(cid)
         original_dims = img.size
         img = img.resize((350, 500))
         new_dims = img.size
@@ -20,11 +21,11 @@ class CardImageWindow(Toplevel):
         self.photo = ImageTk.PhotoImage(img)
 
         # Creazione della Label per l'immagine
-        self.image_label = Label(self, image=self.photo)
+        self.image_label = Label(self, image=self.photo, bg=BG_PRIMARY)
         self.image_label.pack(padx=10, pady=10)
 
-        # Label di stato per visualizzare le coordinate (opzionale)
-        self.coords_label = Label(self, text="Muovi il mouse sull'immagine", fg="blue")
+        # Label di stato per visualizzare le coordinate
+        self.coords_label = Label(self, text="Muovi il mouse sull'immagine", bg=BG_PRIMARY, fg=TEXT_SECONDARY, font=FONT_SMALL)
         self.coords_label.pack(pady=5)
 
         # --- BINDING DELL'EVENTO ---

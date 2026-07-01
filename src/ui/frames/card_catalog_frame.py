@@ -1,10 +1,11 @@
 from tkinter import Frame, Menu
 from .cardsheet_maker_frame import CardSheetMakerFrame
+from src.ui._theme import BG_PRIMARY, TEXT_PRIMARY, FONT_DEFAULT
 
 
 class CardCatalogFrame(Frame):
     def __init__(self, master, cards, on_card_double_click, on_view_card, on_reload_selected):
-        super().__init__(master)
+        super().__init__(master, bg=BG_PRIMARY)
 
         self.on_card_double_click = on_card_double_click
         self.on_view_card = on_view_card
@@ -12,7 +13,7 @@ class CardCatalogFrame(Frame):
 
         self._right_clicked_card_id = None
 
-        self.context_menu = Menu(self, tearoff=0)
+        self.context_menu = Menu(self, tearoff=0, bg="#ffffff", fg=TEXT_PRIMARY, font=FONT_DEFAULT, relief="solid", bd=1)
         self.context_menu.add_command(label="Vedi carta", command=self._view_card)
         self.context_menu.add_separator()
         self.context_menu.add_command(label="Marca/Demarca ricarica art", command=self._toggle_reload_mark)

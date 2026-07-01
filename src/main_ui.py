@@ -73,7 +73,7 @@ def update(download_url):
     sys.exit()
 
 
-from tkinter import Tk, Button, messagebox
+from tkinter import Tk, Frame, Button, messagebox
 from src.basic_config.paths import JSON_DIR, DECK_DIR, IMAGES_DIR, CARD_SHEET, ORDER_SHEET, FONT_PATH, ONLINE_IMAGES_DIR
 from src.render import  TextBoxRenderer, AutoFitTextBoxBuilder
 from src.persistence import JsonCardStorage, JsonDeckStorage, CardSheetMapper, GoogleDriveCardStorage
@@ -81,6 +81,7 @@ from src.services import CardLoader, ImageRenderSync, CardBasicService, DeckBasi
 from src.repository import CardRepository, DeckRepository
 from src._setup_app import ASSETS_LIBRARY, RENDER_DICT, STYLES
 from src.ui import DeckWindowContainer
+from src.ui._theme import BG_PRIMARY, BG_SECONDARY, ACCENT, TEXT_SECONDARY, FONT_DEFAULT, FONT_SMALL, config_ttk_style
 
 from src.domain import CardDefinition, DeckDefinition
 
@@ -94,9 +95,10 @@ class MainUI(Tk):
     def __init__(self):
         super().__init__()
         self.title("Eidolon Card Maker")
-        self.configure(bg="white")
+        self.configure(bg=BG_PRIMARY)
         self.setup_window()
         self.state("zoomed")
+        config_ttk_style()
 
         # In MainUI.__init__
         # 1. Infrastruttura
@@ -140,9 +142,10 @@ class MainUI(Tk):
 
 
         # 5. UI SETUP
-        # Nota: command chiama sync_remote_to_local, non load_cards (che abbiamo rinominato)
-        Button(self, text="Aggiorna catalogo", command=self._on_sync_click).pack(fill="x")
-        Button(self, text="Cancella catalogo", command=self.loader.clean_catalog).pack(fill="x")
+        btn_frame = Frame(self, bg=BG_PRIMARY)
+        btn_frame.pack(fill="x")
+        Button(btn_frame, text="Aggiorna catalogo", command=self._on_sync_click, bg=ACCENT, fg="white", font=FONT_DEFAULT, relief="flat", bd=0, cursor="hand2", padx=12, pady=4).pack(side="left", padx=6, pady=6)
+        Button(btn_frame, text="Cancella catalogo", command=self.loader.clean_catalog, bg="#6c757d", fg="white", font=FONT_DEFAULT, relief="flat", bd=0, cursor="hand2", padx=12, pady=4).pack(side="left", padx=6, pady=6)
 
 
         # =========================

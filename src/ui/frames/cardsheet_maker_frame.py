@@ -2,6 +2,7 @@ import pandas as pd
 from tkinter import Frame, Toplevel, Label
 from tkinter.ttk import Treeview, Scrollbar
 from ._cardsheet_config import COLUMNS_MAP
+from src.ui._theme import BG_SECONDARY, TEXT_PRIMARY, TEXT_SECONDARY, FONT_DEFAULT, FONT_SMALL
 
 
 class CardSheetMakerFrame(Frame):
@@ -45,8 +46,8 @@ class CardSheetMakerFrame(Frame):
         # ------------------------------
         # TREEVIEW
         # ------------------------------
-        container = Frame(self, bg="white")
-        container.pack(fill="both", expand=True)
+        container = Frame(self, bg=BG_SECONDARY, relief="solid", bd=1, highlightbackground="#dee2e6")
+        container.pack(fill="both", expand=True, padx=4, pady=4)
 
         scroll_y = Scrollbar(container, orient="vertical")
         scroll_y.pack(side="right", fill="y")
@@ -230,13 +231,17 @@ class CardSheetMakerFrame(Frame):
             self.tooltip.wm_overrideredirect(True)
             self.tooltip_label = Label(
                 self.tooltip,
-                background="#ffffe0",
+                background="#f8f9fa",
+                foreground=TEXT_PRIMARY,
+                font=FONT_SMALL,
                 relief="solid",
                 borderwidth=1,
                 justify="left",
-                wraplength=self.TOOLTIP_WRAP
+                wraplength=self.TOOLTIP_WRAP,
+                padx=8,
+                pady=4
             )
-            self.tooltip_label.pack(ipadx=6, ipady=4)
+            self.tooltip_label.pack()
 
         self.tooltip_label.config(text=text)
         self.tooltip.geometry(f"+{x+15}+{y+10}")
