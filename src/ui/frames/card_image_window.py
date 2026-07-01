@@ -1,6 +1,6 @@
 from tkinter import Toplevel, Label
 from PIL import Image, ImageTk
-from src.ui._theme import BG_PRIMARY, BG_SECONDARY, TEXT_PRIMARY, TEXT_SECONDARY, FONT_DEFAULT, FONT_SMALL
+from src.ui._theme import BG_PRIMARY, TEXT_SECONDARY, FONT_SMALL
 
 
 class CardImageWindow(Toplevel):

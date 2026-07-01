@@ -1,11 +1,11 @@
 import sys
-import os
-import re
 import pathlib
 
 EXTRA = [
-    "tkinter", "_tkinter", "tkinter.ttk", "tkinter.messagebox",
-    "PySimpleGUI",
+    "tkinter",
+    "_tkinter",
+    "tkinter.ttk",
+    "tkinter.messagebox",
     "webbrowser",
     "pandas.io.clipboard",
     "PIL.ImageQt",
@@ -25,42 +25,41 @@ def patch():
 
     src = path.read_text("utf-8")
 
-    old = "_PRE_SAFE_PACKAGES = ["
-    if old not in src:
-        print("ERROR: _PRE_SAFE_PACKAGES not found")
+    # PyInstaller 6.21.0 already suppresses PySimpleGUI per issue #8396.
+    # We need to add more packages that can also hang on import.
+    # Target the line: suppressed_imports += ['PySimpleGUI']
+    marker = "suppressed_imports += ['PySimpleGUI']"
+    if marker not in src:
+        print("ERROR: suppressed_imports += ['PySimpleGUI'] not found")
         sys.exit(1)
 
-    lines = src.split("\n")
-    new_lines = []
-    found = False
-    already_present = set()
-
-    for line in lines:
-        stripped = line.strip()
-        if stripped.startswith("_PRE_SAFE_PACKAGES = ["):
-            new_lines.append(line)
-            found = True
-            for m in EXTRA:
-                if m not in already_present:
-                    already_present.add(m)
-                    indent = line[:len(line) - len(line.lstrip())] + "    "
-                    new_lines.append(f"{indent}'{m}',")
-            continue
-        if found and stripped == "]":
-            found = False
-        new_lines.append(line)
-
-    result = "\n".join(new_lines)
-    path.write_text(result, "utf-8")
-
-    print("Added to _PRE_SAFE_PACKAGES:")
+    # Build the additions line, skipping packages already in source
+    additions = []
     for m in EXTRA:
-        print(f"  - '{m}'")
+        quoted = f"'{m}'"
+        if quoted not in src:
+            additions.append(quoted)
+
+    if not additions:
+        print("All extra packages already present. Nothing to do.")
+        return
+
+    extra_str = ", ".join(additions)
+    insert = f"\n    suppressed_imports += [{extra_str}]"
+
+    src = src.replace(marker, marker + insert, 1)
+    path.write_text(src, "utf-8")
+
+    print("Added to suppressed_imports:")
+    for m in EXTRA:
+        quoted = f"'{m}'"
+        if quoted in additions:
+            print(f"  - '{m}'")
 
     import importlib
     import PyInstaller.building.build_main as bm
     importlib.reload(bm)
-    print(f"\n_PRE_SAFE_PACKAGES now has {len(bm._PRE_SAFE_PACKAGES)} entries")
+    print("\nPatch applied successfully.")
 
 
 if __name__ == "__main__":
