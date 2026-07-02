@@ -14,26 +14,23 @@ EXTRA = [
 ]
 
 
-def find_pyinstaller_build_main():
-    import PyInstaller.building.build_main as bm
-    return pathlib.Path(bm.__file__)
-
-
 def patch():
-    path = find_pyinstaller_build_main()
+    import PyInstaller.building.build_main as bm
+    path = pathlib.Path(bm.__file__)
     print(f"Patching: {path}")
 
     src = path.read_text("utf-8")
 
     # PyInstaller 6.21.0 already suppresses PySimpleGUI per issue #8396.
     # We need to add more packages that can also hang on import.
-    # Target the line: suppressed_imports += ['PySimpleGUI']
+    # Extend the existing suppressed_imports += ['PySimpleGUI'] line
+    # so we don't introduce any indentation issues.
     marker = "suppressed_imports += ['PySimpleGUI']"
     if marker not in src:
         print("ERROR: suppressed_imports += ['PySimpleGUI'] not found")
         sys.exit(1)
 
-    # Build the additions line, skipping packages already in source
+    # Build the additions, skipping packages already in source
     additions = []
     for m in EXTRA:
         quoted = f"'{m}'"
@@ -45,9 +42,9 @@ def patch():
         return
 
     extra_str = ", ".join(additions)
-    insert = f"\n    suppressed_imports += [{extra_str}]"
-
-    src = src.replace(marker, marker + insert, 1)
+    # Extend the existing list literal on the same line
+    replacement = marker.replace("]", f", {extra_str}]")
+    src = src.replace(marker, replacement, 1)
     path.write_text(src, "utf-8")
 
     print("Added to suppressed_imports:")
@@ -55,11 +52,6 @@ def patch():
         quoted = f"'{m}'"
         if quoted in additions:
             print(f"  - '{m}'")
-
-    import importlib
-    import PyInstaller.building.build_main as bm
-    importlib.reload(bm)
-    print("\nPatch applied successfully.")
 
 
 if __name__ == "__main__":
