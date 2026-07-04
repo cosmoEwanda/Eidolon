@@ -5,7 +5,7 @@ import requests
 from tkinter import Tk, Button, messagebox
 
 # --- CONFIGURAZIONE AUTO-UPDATE ---
-VERSION = "1.0.2"  # <--- Incrementa questo valore ogni volta che fai una nuova release
+VERSION = "1.0.1"  # <--- Incrementa questo valore ogni volta che fai una nuova release
 REPO = "cosmoEwanda/Eidolon"  # <--- Sostituisci con i tuoi dati reali su GitHub
 
 
@@ -45,9 +45,10 @@ def update(download_url):
     new_exe = "nuovo_update.exe"
 
     try:
-        r = requests.get(download_url)
+        r = requests.get(download_url, stream=True)
         with open(new_exe, 'wb') as f:
-            f.write(r.content)
+            for chunk in r.iter_content(chunk_size=8192):
+                f.write(chunk)
     except Exception as e:
         root_temp = Tk()
         root_temp.withdraw()
@@ -64,7 +65,8 @@ def update(download_url):
         @echo off
         taskkill /IM "{os.path.basename(current_exe)}" /F >nul 2>&1
         timeout /t 1 /nobreak >nul
-        move /y "{current_exe}" "{current_exe}"
+        move /y "nuovo_update.exe" "{current_exe}"
+        del "nuovo_update.exe" >nul 2>&1
         start "" "{current_exe}"
         del "%~f0"
         """)
