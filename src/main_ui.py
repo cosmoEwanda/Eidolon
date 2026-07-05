@@ -5,7 +5,7 @@ import requests
 from tkinter import Tk, Button, messagebox
 
 # --- CONFIGURAZIONE AUTO-UPDATE ---
-VERSION = "1.0.3"  # <--- Incrementa questo valore ogni volta che fai una nuova release
+VERSION = "1.0.2"  # <--- Incrementa questo valore ogni volta che fai una nuova release
 REPO = "cosmoEwanda/Eidolon"  # <--- Sostituisci con i tuoi dati reali su GitHub
 
 
@@ -14,12 +14,14 @@ def check_update():
     url = f"https://api.github.com/repos/{REPO}/releases/latest"
     try:
         response = requests.get(url).json()
+
+        print(response)
         if "tag_name" not in response or not response.get("assets"):
             return  # Nessuna release o nessun asset disponibile
 
         latest_version = response["tag_name"].replace("v", "")
-
         if latest_version != VERSION:
+
             # Creiamo una finestra temporanea invisibile per agganciare la messagebox
             root_temp = Tk()
             root_temp.withdraw()
