@@ -5,7 +5,7 @@ import requests
 from tkinter import Tk, Button, messagebox
 
 # --- CONFIGURAZIONE AUTO-UPDATE ---
-VERSION = "1.0.0"  # <--- Incrementa questo valore ogni volta che fai una nuova release
+VERSION = "1.0.1"  # <--- Incrementa questo valore ogni volta che fai una nuova release
 REPO = "cosmoEwanda/Eidolon"  # <--- Sostituisci con i tuoi dati reali su GitHub
 
 
@@ -98,7 +98,7 @@ class MainUI(Tk):
 
     def __init__(self):
         super().__init__()
-        self.title("Eidolon Card Maker")
+        self.title(f"Eidolon Card Maker v{VERSION}")
         self.configure(bg=BG_PRIMARY)
         self.setup_window()
         self.state("zoomed")
