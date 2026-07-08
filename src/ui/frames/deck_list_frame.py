@@ -84,13 +84,13 @@ class DeckListFrame(Frame):
 
     def _create_row(self, cid, qty):
         row = Frame(self.list_container, bg=BG_SECONDARY, relief="solid", bd=1, highlightbackground=BORDER)
-        row.pack(fill="x", pady=2, padx=4)
+        row.pack(fill="x", pady=3, padx=6)
 
-        Label(row, text=cid, width=20, anchor="w", bg=BG_SECONDARY, fg=TEXT_PRIMARY, font=FONT_SMALL).pack(side="left", padx=4)
+        Label(row, text=cid, width=16, anchor="w", bg=BG_SECONDARY, fg=TEXT_PRIMARY, font=FONT_SMALL).pack(side="left", padx=4)
 
-        Button(row, text="-", width=3, command=lambda c=cid: self._dec(c), bg=DANGER, fg="white", relief="flat", bd=0, cursor="hand2", font=FONT_SMALL).pack(side="left", padx=1)
-        Label(row, text=str(qty), width=5, bg=BG_SECONDARY, fg=TEXT_PRIMARY, font=FONT_DEFAULT).pack(side="left")
-        Button(row, text="+", width=3, command=lambda c=cid: self._inc(c), bg=SUCCESS, fg="white", relief="flat", bd=0, cursor="hand2", font=FONT_SMALL).pack(side="left", padx=1)
+        Button(row, text="-", width=3, command=lambda c=cid: self._dec(c), bg=DANGER, fg="white", relief="flat", bd=0, cursor="hand2", font=FONT_SMALL, padx=4, pady=2).pack(side="left", padx=2)
+        Label(row, text=str(qty), width=4, bg=BG_SECONDARY, fg=TEXT_PRIMARY, font=FONT_DEFAULT).pack(side="left")
+        Button(row, text="+", width=3, command=lambda c=cid: self._inc(c), bg=SUCCESS, fg="white", relief="flat", bd=0, cursor="hand2", font=FONT_SMALL, padx=4, pady=2).pack(side="left", padx=2)
 
     def _inc(self, cid):
         self.deck.add(cid)

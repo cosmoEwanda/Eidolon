@@ -77,7 +77,7 @@ def update(download_url):
 
 
 from tkinter import Tk, Frame, Button, messagebox
-from src.basic_config.paths import JSON_DIR, DECK_DIR, IMAGES_DIR, CARD_SHEET, ORDER_SHEET, FONT_PATH, ONLINE_IMAGES_DIR
+from src.basic_config.paths import JSON_DIR, DECK_DIR, IMAGES_DIR, CARD_SHEET, ORDER_SHEET, COST_SHEET, FONT_PATH, ONLINE_IMAGES_DIR
 from src.render import  TextBoxRenderer, AutoFitTextBoxBuilder
 from src.persistence import JsonCardStorage, JsonDeckStorage, CardSheetMapper, GoogleDriveCardStorage
 from src.services import CardLoader, ImageRenderSync, CardBasicService, DeckBasicService, CardRendererService
