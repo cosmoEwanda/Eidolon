@@ -12,7 +12,7 @@ class DecksPage(Frame):
     def __init__(self, master, deck_service, open_callback, new_callback):
         super().__init__(master, bg=BG_PRIMARY)
 
-        self.deck_service = deck_service # Il Repository (non lo Storage!)
+        self.deck_service = deck_service
         self.open_callback = open_callback
         self.new_callback = new_callback
 

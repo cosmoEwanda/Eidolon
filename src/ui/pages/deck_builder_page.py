@@ -71,7 +71,7 @@ class DeckBuilderPage(Frame):
             messagebox.showerror("Errore", "Impossibile salvare un mazzo vuoto")
             return
 
-        new_deck = DeckDefinition(name=name, cards=cards_map) #aggiungere descrizione
+        new_deck = DeckDefinition(name=name, cards=cards_map, description=self.deck.description)
 
         stats_engine = DeckStatistics(new_deck, self.card_service)
 

@@ -26,8 +26,11 @@ class DeckDetailPage(Frame):
     def load(self, deck):
         """Carica i dati del mazzo e costruisce la visualizzazione delle carte."""
         self.current_deck = deck
-        self.label.config(text=deck.name)
-        self.description_label.config(text=deck.description)
+        self.label.config(text=self.current_deck.name if self.current_deck else None)
+        if self.current_deck.description:
+            self.description_label.config(text=self.current_deck.description)
+        else:
+            self.description_label.config(text='')
 
 
         # Pulizia widget precedenti
