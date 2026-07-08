@@ -2,10 +2,9 @@ import os
 import sys
 import subprocess
 import requests
-from tkinter import Tk, Button, messagebox
 
 # --- CONFIGURAZIONE AUTO-UPDATE ---
-VERSION = "1.0.1"  # <--- Incrementa questo valore ogni volta che fai una nuova release
+VERSION = "1.0.3"  # <--- Incrementa questo valore ogni volta che fai una nuova release
 REPO = "cosmoEwanda/Eidolon"  # <--- Sostituisci con i tuoi dati reali su GitHub
 
 
@@ -14,13 +13,11 @@ def check_update():
     url = f"https://api.github.com/repos/{REPO}/releases/latest"
     try:
         response = requests.get(url).json()
-
-        print(response)
         if "tag_name" not in response or not response.get("assets"):
             return  # Nessuna release o nessun asset disponibile
 
         latest_version = response["tag_name"].replace("v", "")
-        if latest_version != VERSION:
+        if tuple(map(int, latest_version.split("."))) > tuple(map(int, VERSION.split("."))):
 
             # Creiamo una finestra temporanea invisibile per agganciare la messagebox
             root_temp = Tk()
@@ -66,7 +63,7 @@ def update(download_url):
         f.write(f"""
         @echo off
         taskkill /IM "{os.path.basename(current_exe)}" /F >nul 2>&1
-        timeout /t 1 /nobreak >nul
+        timeout /t 2 /nobreak >nul
         move /y "nuovo_update.exe" "{current_exe}"
         del "nuovo_update.exe" >nul 2>&1
         start "" "{current_exe}"

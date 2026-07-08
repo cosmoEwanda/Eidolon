@@ -4,8 +4,8 @@ calculateDa.py
 test/
 __pycache__/
 *.pyc
-dist/            # <-- EXE generato da PyInstaller
-build/           # <-- working directory di PyInstaller
-*.exe            # <-- eventuali exe sparsi
-nuovo_update.exe # <-- scaricato dall'auto-update
-update.bat       # <-- generato dall'auto-update
+dist/
+build/
+*.exe
+nuovo_update.exe
+update.bat
