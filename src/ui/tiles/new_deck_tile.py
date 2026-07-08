@@ -1,10 +1,11 @@
 from tkinter import Button, Frame
+from src.ui._theme import SUCCESS, SUCCESS_LIGHT, TEXT_PRIMARY, FONT_DEFAULT
 
 
 class NewDeckTile(Frame):
 
     def __init__(self, master, command):
-        super().__init__(master, width=70, height=70, bg="#c8f7c5", relief="ridge", bd=2)
+        super().__init__(master, width=80, height=80, bg=SUCCESS_LIGHT, relief="solid", bd=1)
 
         self.pack_propagate(False)
 
@@ -12,6 +13,11 @@ class NewDeckTile(Frame):
             self,
             text="+\nNuovo",
             command=command,
-            bg="#a8e6a1"
+            bg=SUCCESS,
+            fg="white",
+            font=FONT_DEFAULT,
+            relief="flat",
+            bd=0,
+            cursor="hand2"
         )
         btn.pack(fill="both", expand=True)

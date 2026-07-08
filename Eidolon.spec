@@ -5,18 +5,12 @@ a = Analysis(
     ['src\\main_ui.py'],
     pathex=[],
     binaries=[],
-    datas=[
-        ('assets', 'assets'),
-        ('config.json', '.')  # <-- 1. Include config.json nella cartella radice dell'EXE
-    ],
+    datas=[('assets', 'assets')],
     hiddenimports=[],
     hookspath=[],
-    hooksconfig={'setuptools': {'vendor': False}},
-    # <-- 2. Esclude moduli pesanti/test per evitare il blocco nella ricerca delle DLL
-    #     setuptools NON in excludes: al suo posto usiamo hooksconfig per gestire i vendor
-    # NOTA: distutils e pkg_resources NON in excludes: gli hook PyInstaller (hook-distutils, hook-setuptools)
-    #       creano alias per questi moduli; escluderli causa ValueError: "already imported as ExcludedModule"
-    excludes=['pip', 'pytest', 'test', 'unittest', 'tkinter.test', 'pygments', 'matplotlib', 'scipy', 'cv2'],
+    hooksconfig={},
+    runtime_hooks=[],
+    excludes=[],
     noarchive=False,
     optimize=0,
 )
@@ -32,7 +26,7 @@ exe = EXE(
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
-    upx=False,  # <-- CAMBIATO DA TRUE A FALSE
+    upx=True,
     upx_exclude=[],
     runtime_tmpdir=None,
     console=False,

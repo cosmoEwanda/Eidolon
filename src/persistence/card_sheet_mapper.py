@@ -1,5 +1,4 @@
 import pandas as pd
-import hashlib
 from pathlib import Path
 from ..domain import CardFactory, CardDefinition
 

@@ -3,12 +3,13 @@ from tkinter import Frame, messagebox
 from src.domain import CardDefinition, DeckDefinition
 from src.ui.frames import CardCatalogFrame, DeckListFrame, CardImageWindow
 from src.services import DeckStatistics
+from src.ui._theme import BG_PRIMARY, BG_SECONDARY
 
 
 class DeckBuilderPage(Frame):
 
     def __init__(self, master, card_service, card_loader, on_save, deck_name="Nuovo Mazzo"):
-        super().__init__(master)
+        super().__init__(master, bg=BG_PRIMARY)
 
         self.card_service = card_service  # CardRepository
         self.card_loader = card_loader  # CardLoader (Service)
@@ -24,15 +25,15 @@ class DeckBuilderPage(Frame):
         self._setup_ui()
 
     def _setup_ui(self):
-        main = Frame(self)
+        main = Frame(self, bg=BG_PRIMARY)
         main.pack(fill="both", expand=True)
 
-        self.right = Frame(main, width=250)
-        self.right.pack(side="right", fill="y")
+        self.right = Frame(main, width=250, bg=BG_SECONDARY, relief="solid", bd=1, highlightbackground="#dee2e6")
+        self.right.pack(side="right", fill="y", padx=(0, 6), pady=6)
         self.right.pack_propagate(False)  # IMPORTANTISSIMO
 
-        self.left = Frame(main)
-        self.left.pack(side="left", fill="both", expand=True)
+        self.left = Frame(main, bg=BG_PRIMARY)
+        self.left.pack(side="left", fill="both", expand=True, padx=(6, 0), pady=6)
 
         # Catalogo: passa la lista di oggetti CardDefinition
         self.catalog = CardCatalogFrame(

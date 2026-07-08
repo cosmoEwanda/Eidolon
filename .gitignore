@@ -3,4 +3,9 @@ venv/
 calculateDa.py
 test/
 __pycache__/
-*.pyc
+*.pycs
+dist/
+build/
+*.exe
+nuovo_update.exe
+update.bat

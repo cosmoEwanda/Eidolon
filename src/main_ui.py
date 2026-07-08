@@ -2,12 +2,11 @@ import os
 import sys
 import subprocess
 import requests
-from tkinter import Tk, Button, messagebox
 
 from src.utils.migrate_deck_costs import migrate_deck_costs
 
 # --- CONFIGURAZIONE AUTO-UPDATE ---
-VERSION = "1.0.1"  # <--- Incrementa questo valore ogni volta che fai una nuova release
+VERSION = "1.0.3"  # <--- Incrementa questo valore ogni volta che fai una nuova release
 REPO = "cosmoEwanda/Eidolon"  # <--- Sostituisci con i tuoi dati reali su GitHub
 
 
@@ -16,12 +15,12 @@ def check_update():
     url = f"https://api.github.com/repos/{REPO}/releases/latest"
     try:
         response = requests.get(url).json()
-        if "tag_name" not in response:
-            return  # Nessuna release trovata, prosegue normalmente
+        if "tag_name" not in response or not response.get("assets"):
+            return  # Nessuna release o nessun asset disponibile
 
         latest_version = response["tag_name"].replace("v", "")
+        if tuple(map(int, latest_version.split("."))) > tuple(map(int, VERSION.split("."))):
 
-        if latest_version != VERSION:
             # Creiamo una finestra temporanea invisibile per agganciare la messagebox
             root_temp = Tk()
             root_temp.withdraw()
@@ -47,9 +46,10 @@ def update(download_url):
     new_exe = "nuovo_update.exe"
 
     try:
-        r = requests.get(download_url)
+        r = requests.get(download_url, stream=True)
         with open(new_exe, 'wb') as f:
-            f.write(r.content)
+            for chunk in r.iter_content(chunk_size=8192):
+                f.write(chunk)
     except Exception as e:
         root_temp = Tk()
         root_temp.withdraw()
@@ -65,8 +65,9 @@ def update(download_url):
         f.write(f"""
         @echo off
         taskkill /IM "{os.path.basename(current_exe)}" /F >nul 2>&1
-        timeout /t 1 /nobreak >nul
-        move /y "{current_exe}" "{current_exe}"
+        timeout /t 2 /nobreak >nul
+        move /y "nuovo_update.exe" "{current_exe}"
+        del "nuovo_update.exe" >nul 2>&1
         start "" "{current_exe}"
         del "%~f0"
         """)
@@ -75,16 +76,15 @@ def update(download_url):
     sys.exit()
 
 
-from tkinter import Tk, Button, messagebox
-from src.basic_config.paths import (JSON_DIR, DECK_DIR, IMAGES_DIR,
-                                    CARD_SHEET, ORDER_SHEET, COST_SHEET,
-                                    FONT_PATH, ONLINE_IMAGES_DIR)
+from tkinter import Tk, Frame, Button, messagebox
+from src.basic_config.paths import JSON_DIR, DECK_DIR, IMAGES_DIR, CARD_SHEET, ORDER_SHEET, FONT_PATH, ONLINE_IMAGES_DIR
 from src.render import  TextBoxRenderer, AutoFitTextBoxBuilder
 from src.persistence import JsonCardStorage, JsonDeckStorage, CardSheetMapper, GoogleDriveCardStorage
 from src.services import CardLoader, ImageRenderSync, CardBasicService, DeckBasicService, CardRendererService
 from src.repository import CardRepository, DeckRepository
 from src._setup_app import ASSETS_LIBRARY, RENDER_DICT, STYLES
 from src.ui import DeckWindowContainer
+from src.ui._theme import BG_PRIMARY, BG_SECONDARY, ACCENT, TEXT_SECONDARY, FONT_DEFAULT, FONT_SMALL, config_ttk_style
 
 from src.domain import CardDefinition, DeckDefinition
 
@@ -97,10 +97,11 @@ class MainUI(Tk):
 
     def __init__(self):
         super().__init__()
-        self.title("Eidolon Card Maker")
-        self.configure(bg="white")
+        self.title(f"Eidolon Card Maker v{VERSION}")
+        self.configure(bg=BG_PRIMARY)
         self.setup_window()
         self.state("zoomed")
+        config_ttk_style()
 
         # In MainUI.__init__
         # 1. Infrastruttura
@@ -144,9 +145,10 @@ class MainUI(Tk):
 
 
         # 5. UI SETUP
-        # Nota: command chiama sync_remote_to_local, non load_cards (che abbiamo rinominato)
-        Button(self, text="Aggiorna catalogo", command=self._on_sync_click).pack(fill="x")
-        Button(self, text="Cancella catalogo", command=self.loader.clean_catalog).pack(fill="x")
+        btn_frame = Frame(self, bg=BG_PRIMARY)
+        btn_frame.pack(fill="x")
+        Button(btn_frame, text="Aggiorna catalogo", command=self._on_sync_click, bg=ACCENT, fg="white", font=FONT_DEFAULT, relief="flat", bd=0, cursor="hand2", padx=12, pady=4).pack(side="left", padx=6, pady=6)
+        Button(btn_frame, text="Cancella catalogo", command=self.loader.clean_catalog, bg="#6c757d", fg="white", font=FONT_DEFAULT, relief="flat", bd=0, cursor="hand2", padx=12, pady=4).pack(side="left", padx=6, pady=6)
 
 
         # =========================

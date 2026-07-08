@@ -2,12 +2,13 @@ from tkinter import Frame, Button, messagebox
 from src.services import DeckPrintService, PdfInUseError
 from src.ui.pages import DeckBuilderPage, DeckDetailPage, DecksPage
 from src.utils.errors import DeckNameAlreadyExistsError
+from src.ui._theme import BG_PRIMARY, BG_SECONDARY, ACCENT, TEXT_PRIMARY, FONT_DEFAULT
 
 
 class DeckWindowContainer(Frame):
 
     def __init__(self, master, card_service, deck_service, card_loader):
-        super().__init__(master)
+        super().__init__(master, bg=BG_PRIMARY)
         self.pack(fill="both", expand=True)
 
         self.card_service = card_service
@@ -25,9 +26,9 @@ class DeckWindowContainer(Frame):
 
         self.show("decks")
 
-        self.bottom_frame = Frame(self)
+        self.bottom_frame = Frame(self, bg=BG_PRIMARY)
         self.bottom_frame.pack(side="bottom", fill="both")
-        Button(self.bottom_frame, text="Home", command= lambda : self.show("decks")).pack(side="left")
+        Button(self.bottom_frame, text="Home", bg=ACCENT, fg="white", font=FONT_DEFAULT, relief="flat", bd=0, cursor="hand2", padx=16, pady=4, command= lambda : self.show("decks")).pack(side="left", padx=6, pady=4)
 
     # -------------------------------------------------
 
