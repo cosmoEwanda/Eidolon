@@ -6,7 +6,7 @@ import requests
 from src.utils.migrate_deck_costs import migrate_deck_costs
 
 # --- CONFIGURAZIONE AUTO-UPDATE ---
-VERSION = "1.0.3"  # <--- Incrementa questo valore ogni volta che fai una nuova release
+VERSION = ("1.0.2")  # <--- Incrementa questo valore ogni volta che fai una nuova release
 REPO = "cosmoEwanda/Eidolon"  # <--- Sostituisci con i tuoi dati reali su GitHub
 
 
