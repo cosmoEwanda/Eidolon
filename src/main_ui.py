@@ -197,11 +197,18 @@ class MainUI(Tk):
             rarity="",
         )
         rune.set_attributes("sinergy", "NULL")
-        deck_rune = DeckDefinition(
-        name="!deck_rune!",
-        cards={"__R__": 15},
-        description=rune_deck_description
-    )
+
+        existing = self.deck_service.find_by_name("!deck_rune!")
+        if existing:
+            deck_rune = existing
+            deck_rune.cards = {"__R__": 15}
+            deck_rune.description = rune_deck_description
+        else:
+            deck_rune = DeckDefinition(
+                name="!deck_rune!",
+                cards={"__R__": 15},
+                description=rune_deck_description
+            )
 
         self.card_service.save_card_service(rune)
         self.deck_service.update_deck_service(deck_rune)

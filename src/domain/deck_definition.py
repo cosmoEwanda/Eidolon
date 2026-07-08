@@ -1,3 +1,4 @@
+import uuid
 from . import _deck_config
 
 class DeckDefinition:
@@ -7,14 +8,15 @@ class DeckDefinition:
     MIN_DECK_CARDS = _deck_config.MIN_DECK_CARDS
     MAX_DECK_CARDS = _deck_config.MAX_DECK_CARDS
 
-    def __init__(self, name : str, cards : dict [str, int] | None = None, description : str = None):
+    def __init__(self, name: str = "", cards: dict[str, int] | None = None, description: str = None, id: str = None):
+        self.id = id or str(uuid.uuid4())
         self.name = name
         self.cards = cards or {}
         self.description = description
         self.avg_cost = {}
         self.avg_strenght = {}
 
-    def add(self, card_id, qty = 1):
+    def add(self, card_id, qty=1):
         self.cards[card_id] = self.cards.get(card_id, 0) + qty
 
     def remove(self, card_id, qty=1):
@@ -29,6 +31,7 @@ class DeckDefinition:
     @property
     def to_dict(self):
         return {
+            "id": self.id,
             "name": self.name,
             "cards": self.cards,
             "description": self.description,

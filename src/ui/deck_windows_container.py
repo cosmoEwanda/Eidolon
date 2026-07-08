@@ -75,16 +75,20 @@ class DeckWindowContainer(Frame):
             self.show("decks")
 
         except DeckNameAlreadyExistsError:
-            messagebox.showerror(
+            replace = messagebox.askyesno(
                 "Nome già usato",
-                f"Esiste già un deck con nome '{deck.name}'. Scegli un nome diverso."
+                f"Esiste già un deck con nome '{deck.name}'.\nVuoi sostituire il mazzo precedente?"
             )
-            return
+            if replace:
+                old = self.deck_service.find_by_name(deck.name)
+                if old:
+                    self.deck_service.delete_deck_service(old.id)
+                self.deck_service.create_deck_service(deck)
+                self.pages["decks"].reload()
+                self.show("decks")
 
     def _after_delete_deck(self, deck):
-        """Cancellazione basata solo sul nome (ID)."""
-        # Il repository ora accetta il nome, non l'oggetto intero
-        self.deck_service.delete_deck_service(deck.name)
+        self.deck_service.delete_deck_service(deck.id)
         self.pages["decks"].reload()
         self.show("decks")
 
