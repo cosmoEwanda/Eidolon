@@ -179,6 +179,7 @@ imports:
  &#8226;   <a href="#src.services">src.services</a>
  &#8226;   <a href="#src.ui">src.ui</a>
  &#8226;   <a href="#src.ui._theme">src.ui._theme</a>
+ &#8226;   <a href="#src.utils.migrate_deck_costs">src.utils.migrate_deck_costs</a>
  &#8226;   <a href="#sre_compile">sre_compile</a>
  &#8226;   <a href="#sre_constants">sre_constants</a>
  &#8226;   <a href="#sre_parse">sre_parse</a>
@@ -18248,6 +18249,7 @@ imported by:
  &#8226;   <a href="#src.persistence.json_deck_storage">src.persistence.json_deck_storage</a>
  &#8226;   <a href="#src.services.image_render_sync">src.services.image_render_sync</a>
  &#8226;   <a href="#src.utils.card_hasher">src.utils.card_hasher</a>
+ &#8226;   <a href="#src.utils.migrate_deck_costs">src.utils.migrate_deck_costs</a>
  &#8226;   <a href="#urllib3._request_methods">urllib3._request_methods</a>
  &#8226;   <a href="#urllib3.contrib.emscripten.fetch">urllib3.contrib.emscripten.fetch</a>
  &#8226;   <a href="#urllib3.contrib.emscripten.response">urllib3.contrib.emscripten.response</a>
@@ -39888,6 +39890,7 @@ imported by:
  &#8226;   <a href="#src.services.card_renderer_service">src.services.card_renderer_service</a>
  &#8226;   <a href="#src.services.deck_print_service">src.services.deck_print_service</a>
  &#8226;   <a href="#src.services.image_render_sync">src.services.image_render_sync</a>
+ &#8226;   <a href="#src.utils.migrate_deck_costs">src.utils.migrate_deck_costs</a>
  &#8226;   <a href="#zipfile._path">zipfile._path</a>
 
   </div>
@@ -56949,6 +56952,7 @@ imports:
   <div class="import">
 imported by:
     <a href="#src.basic_config.paths">src.basic_config.paths</a>
+ &#8226;   <a href="#src.utils.migrate_deck_costs">src.utils.migrate_deck_costs</a>
 
   </div>
 
@@ -57005,6 +57009,7 @@ imported by:
  &#8226;   <a href="#src.repository.card_repository">src.repository.card_repository</a>
  &#8226;   <a href="#src.repository.deck_repository">src.repository.deck_repository</a>
  &#8226;   <a href="#src.ui.pages.deck_builder_page">src.ui.pages.deck_builder_page</a>
+ &#8226;   <a href="#src.utils.migrate_deck_costs">src.utils.migrate_deck_costs</a>
 
   </div>
 
@@ -57084,6 +57089,7 @@ imported by:
 imports:
     <a href="#src.domain">src.domain</a>
  &#8226;   <a href="#src.domain._deck_config">src.domain._deck_config</a>
+ &#8226;   <a href="#uuid">uuid</a>
 
   </div>
   <div class="import">
@@ -57199,6 +57205,7 @@ imports:
  &#8226;   <a href="#pathlib">pathlib</a>
  &#8226;   <a href="#src.persistence">src.persistence</a>
  &#8226;   <a href="#tempfile">tempfile</a>
+ &#8226;   <a href="#uuid">uuid</a>
 
   </div>
   <div class="import">
@@ -57941,6 +57948,7 @@ imports:
 imported by:
     <a href="#src.utils.card_hasher">src.utils.card_hasher</a>
  &#8226;   <a href="#src.utils.errors">src.utils.errors</a>
+ &#8226;   <a href="#src.utils.migrate_deck_costs">src.utils.migrate_deck_costs</a>
 
   </div>
 
@@ -57976,6 +57984,28 @@ imports:
 imported by:
     <a href="#src.services.deck_basic_service">src.services.deck_basic_service</a>
  &#8226;   <a href="#src.ui.deck_windows_container">src.ui.deck_windows_container</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="src.utils.migrate_deck_costs"></a>
+  <a target="code" href="///C:/Users/nirch/PycharmProjects/Eidolon/src/utils/migrate_deck_costs.py" type="text/plain"><tt>src.utils.migrate_deck_costs</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#json">json</a>
+ &#8226;   <a href="#pathlib">pathlib</a>
+ &#8226;   <a href="#src.basic_config._paths_composer">src.basic_config._paths_composer</a>
+ &#8226;   <a href="#src.domain">src.domain</a>
+ &#8226;   <a href="#src.utils">src.utils</a>
+ &#8226;   <a href="#sys">sys</a>
+ &#8226;   <a href="#typing">typing</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#main_ui.py">main_ui.py</a>
 
   </div>
 
@@ -58673,6 +58703,7 @@ imported by:
  &#8226;   <a href="#sqlite3.__main__">sqlite3.__main__</a>
  &#8226;   <a href="#src.basic_config._paths_composer">src.basic_config._paths_composer</a>
  &#8226;   <a href="#src.basic_config.paths">src.basic_config.paths</a>
+ &#8226;   <a href="#src.utils.migrate_deck_costs">src.utils.migrate_deck_costs</a>
  &#8226;   <a href="#ssl">ssl</a>
  &#8226;   <a href="#statistics">statistics</a>
  &#8226;   <a href="#subprocess">subprocess</a>
@@ -59128,6 +59159,7 @@ imports:
  &#8226;   <a href="#os">os</a>
  &#8226;   <a href="#re">re</a>
  &#8226;   <a href="#sys">sys</a>
+ &#8226;   <a href="#tkinter.commondialog">tkinter.commondialog</a>
  &#8226;   <a href="#tkinter.constants">tkinter.constants</a>
  &#8226;   <a href="#tkinter.filedialog">tkinter.filedialog</a>
  &#8226;   <a href="#tkinter.messagebox">tkinter.messagebox</a>
@@ -59173,7 +59205,8 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#tkinter.filedialog">tkinter.filedialog</a>
+    <a href="#tkinter">tkinter</a>
+ &#8226;   <a href="#tkinter.filedialog">tkinter.filedialog</a>
  &#8226;   <a href="#tkinter.messagebox">tkinter.messagebox</a>
 
   </div>
@@ -60262,6 +60295,7 @@ imported by:
  &#8226;   <a href="#src.render.text_layout">src.render.text_layout</a>
  &#8226;   <a href="#src.render.types">src.render.types</a>
  &#8226;   <a href="#src.services.deck_print_service">src.services.deck_print_service</a>
+ &#8226;   <a href="#src.utils.migrate_deck_costs">src.utils.migrate_deck_costs</a>
  &#8226;   <a href="#tomllib._parser">tomllib._parser</a>
  &#8226;   <a href="#tomllib._re">tomllib._re</a>
  &#8226;   <a href="#tomllib._types">tomllib._types</a>
@@ -62416,6 +62450,8 @@ imported by:
  &#8226;   <a href="#_pytest.pathlib">_pytest.pathlib</a>
  &#8226;   <a href="#pandas.core.reshape.merge">pandas.core.reshape.merge</a>
  &#8226;   <a href="#pandas.io.formats.style_render">pandas.io.formats.style_render</a>
+ &#8226;   <a href="#src.domain.deck_definition">src.domain.deck_definition</a>
+ &#8226;   <a href="#src.persistence.json_deck_storage">src.persistence.json_deck_storage</a>
 
   </div>
 
