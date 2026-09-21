@@ -1,12 +1,12 @@
 import uuid
-from . import _deck_config
+from . import deck_config
 
 class DeckDefinition:
-    MAX_COMMON_CARDS = _deck_config.MAX_COMMON_CARDS
-    MAX_RARE_CARDS = _deck_config.MAX_RARE_CARDS
-    MAX_EPIC_CARDS = _deck_config.MAX_EPIC_CARDS
-    MIN_DECK_CARDS = _deck_config.MIN_DECK_CARDS
-    MAX_DECK_CARDS = _deck_config.MAX_DECK_CARDS
+    MAX_COMMON_CARDS = deck_config.MAX_COMMON_CARDS
+    MAX_RARE_CARDS = deck_config.MAX_RARE_CARDS
+    MAX_EPIC_CARDS = deck_config.MAX_EPIC_CARDS
+    MIN_DECK_CARDS = deck_config.MIN_DECK_CARDS
+    MAX_DECK_CARDS = deck_config.MAX_DECK_CARDS
 
     def __init__(self, name: str = "", cards: dict[str, int] | None = None, description: str = None, id: str = None):
         self.id = id or str(uuid.uuid4())

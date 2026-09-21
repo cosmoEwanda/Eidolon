@@ -1,5 +1,5 @@
 from pathlib import Path
-import src.domain._card_config as _card_config
+import src.domain.card_config as _card_config
 
 class CardDefinition:
     VALID_CONSTRUCTS = _card_config.CONSTRUCTS
