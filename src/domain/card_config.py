@@ -41,7 +41,23 @@ STATS = [
 
 RARITY = ["Comune", "Raro", "Epico"]
 
-MANA = ["Gemme", "Rune", "Attivazione"]
+PAYABLE_RESOURCES = ["Gemme", "Rune"]
+SPECIAL_MANA = ["Attivazione"]
 
+MANA = PAYABLE_RESOURCES + SPECIAL_MANA
 
-COSTS = ["RuneG", "GemmeG", "RuneR", "GemmeR"]
+COST_GROUPS = {
+    "G": "top",
+    "R": "bottom",
+}
+
+COST_DEFINITIONS = {
+    f"{res}{suffix}": {"mana": res, "group": group}
+    for group, suffix in [("top", "G"), ("bottom", "R")]
+    for res in PAYABLE_RESOURCES
+}
+
+# Se nel resto del codice (validatori, parser, ecc.) serve ancora una lista di stringhe:
+COSTS = list(COST_DEFINITIONS.keys())
+TOP_COST_KEYS = [k for k, v in COST_DEFINITIONS.items() if v["group"] == "top"]
+BOTTOM_COST_KEYS = [k for k, v in COST_DEFINITIONS.items() if v["group"] == "bottom"]
