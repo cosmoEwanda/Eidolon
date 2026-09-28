@@ -5,8 +5,7 @@ from src.render.types import Padding
 from src.render.style import TextBoxStyle
 
 
-ORDER_ICONS_DEFAULT_DIM = (62, 62)
-ORDER_ICONS_VARCO_DIM = (104, 104)
+ORDER_ICONS_DEFAULT_DIM = (80, 80)
 STATS_DEFAULT_DIM = (90, 60)
 COST_DIM = (90, 60)
 
@@ -14,19 +13,20 @@ COMMON_STYLE = TextBoxStyle(
     font_path=FONT_PATH,
     font_size=45,
     text_color=(0, 0, 0, 255),
-    bg_color=(0,0,0,0),
+    bg_color=(125,125,125,0),
     align="right",
     padding=Padding(0, 0, 0, 0)
 )
 
 STYLES = {
-    "name": replace(COMMON_STYLE, font_size=60),
+    "name": replace(COMMON_STYLE, font_size=55),
     "construct": replace(COMMON_STYLE, font_size=50),
+    "sinergy": replace(COMMON_STYLE, font_size=50, align="center"),
     "stats": replace(COMMON_STYLE, align="center"),
-    "cost" : replace(COMMON_STYLE, align="center"),
+    "cost" : replace(COMMON_STYLE, align="left", font_size=53),
     "ability": replace(COMMON_STYLE, align="left", padding=Padding(5, 0, 0, 5)),
     "rarity": replace(COMMON_STYLE, align="center", font_size=35),
-    "energy" : replace(COMMON_STYLE, align="center", font_size=50),
+    "energy" : replace(COMMON_STYLE, align="center", font_size=120),
     "RUNA" : replace(COMMON_STYLE, text_color=(0,0,0,0)) #trasparente
 }
 
@@ -52,34 +52,43 @@ def get_base_layout():
             "style" : STYLES["name"],
             "elems" : {
                 "Name" : {
-                    "pos": (280, 70),
-                    "dim": (590, 70)}
+                    "pos": (300, 30),
+                    "dim": (530, 95)}
                 }
             },
         "rarity_config" : {
             "style" : STYLES["rarity"],
             "elems" : {
                 "Rarity" : {
-                    "pos": (60, 930),
-                    "dim": (180, 90)}
+                    "pos": (120, 145),
+                    "dim": (150, 90)}
                 }
             },
         "ability_config" : {
             "style": STYLES["ability"],
             "elems" : {
                 "Ability" : {
-                    "pos": (65, 1000),
-                    "dim": (805, 210)}
+                    "pos": (40, 1000),
+                    "dim": (850, 270)}
                 }
             },
         "construct_config": {
             "style" : STYLES["construct"],
             "elems" : {
                 "Construct" : {
-                    "pos": (280, 180),
-                    "dim": (590, 70)}
+                    "pos": (300, 140),
+                    "dim": (500, 70)}
                 }
             },
+        "sinergy_config": {
+            "style" : STYLES["sinergy"],
+            "elems" : {
+                "Sinergy" : {
+                    "pos": (130, 920),
+                    "dim": (675, 90)
+                }
+            }
+        },
         "stats_config" : {
             "style": STYLES["stats"],
             "elems": {
@@ -87,13 +96,13 @@ def get_base_layout():
                     "pos": (153, 34),
                     "dim": STATS_DEFAULT_DIM},
                 CardDefinition.VALID_STATS[1]: {  # Forza
-                    "pos": (355, 1235),
+                    "pos": (675, 1310),
                     "dim": STATS_DEFAULT_DIM},
                 CardDefinition.VALID_STATS[2]: {  # Tenacia
-                    "pos": (560, 1235),
+                    "pos": (750, 1310),
                     "dim": STATS_DEFAULT_DIM},
                 CardDefinition.VALID_STATS[3]: {  # Astuzia
-                    "pos": (755, 1235),
+                    "pos": (480, 1310),
                     "dim": STATS_DEFAULT_DIM}
                 },
 
@@ -102,41 +111,63 @@ def get_base_layout():
             "style": STYLES["cost"],
             "elems": {
                 "top_cost": {
-                    "pos": (140, 70),
-                    "dim": (200, 60)},
+                    "pos": (90, 35),
+                    "dim": (210, 80)},
                 "bottom_cost": {
-                    "pos": (150, 1235),
+                    "pos": (40, 1315),
                     "dim": (200, 60)},
             }
         },
-        "orders_config": {
+        "orders_config1": {
             "style": None,
             "elems": {
                 CardDefinition.VALID_ORDERS[0] : {
-                    "pos": (60, 313),
+                    "pos": (17, 295),
                     "dim": ORDER_ICONS_DEFAULT_DIM},
                 CardDefinition.VALID_ORDERS[1] : {
-                    "pos": (60, 407),
+                    "pos": (19, 395),
                     "dim": ORDER_ICONS_DEFAULT_DIM},
                 CardDefinition.VALID_ORDERS[2]: {
-                    "pos": (60, 501),
+                    "pos": (19, 495),
                     "dim": ORDER_ICONS_DEFAULT_DIM},
                 CardDefinition.VALID_ORDERS[3]: {
-                    "pos": (60, 595),
+                    "pos": (19, 595),
                     "dim": ORDER_ICONS_DEFAULT_DIM},
                 CardDefinition.VALID_ORDERS[4]: {
-                    "pos": (60, 690),
+                    "pos": (19, 693),
                     "dim": ORDER_ICONS_DEFAULT_DIM},
                 CardDefinition.VALID_ORDERS[5]: {
-                    "pos": (60, 786),
+                    "pos": (19, 791),
+                    "dim": ORDER_ICONS_DEFAULT_DIM}}
+            },
+        "orders_config2": {
+            "style": None,
+            "elems": {
+                CardDefinition.VALID_ORDERS[0] : {
+                    "pos": (833, 300),
+                    "dim": ORDER_ICONS_DEFAULT_DIM},
+                CardDefinition.VALID_ORDERS[1] : {
+                    "pos": (835, 400),
+                    "dim": ORDER_ICONS_DEFAULT_DIM},
+                CardDefinition.VALID_ORDERS[2]: {
+                    "pos": (835, 500),
+                    "dim": ORDER_ICONS_DEFAULT_DIM},
+                CardDefinition.VALID_ORDERS[3]: {
+                    "pos": (835, 600),
+                    "dim": ORDER_ICONS_DEFAULT_DIM},
+                CardDefinition.VALID_ORDERS[4]: {
+                    "pos": (835, 700),
+                    "dim": ORDER_ICONS_DEFAULT_DIM},
+                CardDefinition.VALID_ORDERS[5]: {
+                    "pos": (835, 798),
                     "dim": ORDER_ICONS_DEFAULT_DIM}}
             },
         "art_config" : {
             "style": None,
             "elems": {
                 "art" : {
-                    "pos" : (239, 335),
-                    "dim" : (600, 570)
+                    "pos" : (140, 235),
+                    "dim" : (650, 650)
                 }
             }
         }
@@ -149,54 +180,10 @@ RENDER_DICT = {}
 for i, construct in enumerate(CardDefinition.VALID_CONSTRUCTS):
         RENDER_DICT[construct] = get_base_layout()
 
-
-
-#posizionamento specifico degli ordini in Varco
-RENDER_DICT["Varco"]["orders_config"]["elems"] = {
-            CardDefinition.VALID_ORDERS[0] : {
-                "pos": (200, 330),
-                "dim": ORDER_ICONS_VARCO_DIM},
-            CardDefinition.VALID_ORDERS[1] : {
-                "pos": (106, 472),
-                "dim": ORDER_ICONS_VARCO_DIM},
-            CardDefinition.VALID_ORDERS[2]: {
-                "pos": (87, 629),
-                "dim": ORDER_ICONS_VARCO_DIM},
-            CardDefinition.VALID_ORDERS[3]: {
-                "pos": (640, 330),
-                "dim": ORDER_ICONS_VARCO_DIM},
-            CardDefinition.VALID_ORDERS[4]: {
-                "pos": (734, 472),
-                "dim": ORDER_ICONS_VARCO_DIM},
-            CardDefinition.VALID_ORDERS[5]: {
-                "pos": (754, 629),
-                "dim": ORDER_ICONS_VARCO_DIM}
-            }
-RENDER_DICT["Varco"]["name_config"]["elems"] = {
-    "Name" : {
-        "pos" : (110, 85),
-        "dim" : (720, 80)
-    }
-}
-
-RENDER_DICT["Varco"]["construct_config"]["elems"] = {
-    "Construct" : {
-        "pos" : (110, 200),
-        "dim" : (720, 80)
-    }
-}
-
-RENDER_DICT["Varco"]["rarity_config"]["elems"] = {
-    "Rarity" : {
-        "pos" : (115, 845),
-        "dim" : (130, 80)
-    }
-}
-
 RENDER_DICT["Varco"]["ability_config"]["elems"] = {
     "Ability" : {
-        "pos" : (120, 930),
-        "dim" : (720, 225)
+        "pos" : (40, 950),
+        "dim" : (850, 325)
     }
 }
 
@@ -204,16 +191,9 @@ RENDER_DICT["Varco"]["stats_config"] = {
     "style" : STYLES["energy"],
     "elems": {
         CardDefinition.VALID_STATS[0] : {
-            "pos" : (440, 1225),
-            "dim" : STATS_DEFAULT_DIM
+            "pos" : (410, 1290),
+            "dim" : (120, 100)
     }}
-}
-
-RENDER_DICT["Varco"]["art_config"]["elems"] = {
-        "art" : {
-            "pos" : (230, 352),
-            "dim" : (480, 478)
-        }
 }
 
 RENDER_DICT["Runa"] = get_base_layout()
@@ -222,4 +202,5 @@ RENDER_DICT["Runa"]["construct_config"]["style"] = STYLES["RUNA"]
 
 
 if __name__ == "__main__":
-    print(RENDER_DICT)
+    for key, val in RENDER_DICT.items():
+        print(key, val)

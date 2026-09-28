@@ -4,6 +4,10 @@ import subprocess
 import requests
 
 from src.utils.migrate_deck_costs import migrate_deck_costs
+from src.utils.setup_reloader import reload_setup_app
+
+# --- MODALITÀ SVILUPPATORE (nascosta ai non-dev) ---
+DEV_MODE = os.environ.get("EIDOLON_DEV") == "1" or "--dev" in sys.argv
 
 # --- CONFIGURAZIONE AUTO-UPDATE ---
 VERSION = ("1.1.1")  # <--- Incrementa questo valore ogni volta che fai una nuova release
@@ -148,8 +152,14 @@ class MainUI(Tk):
         btn_frame = Frame(self, bg=BG_PRIMARY)
         btn_frame.pack(fill="x")
         Button(btn_frame, text="Aggiorna catalogo", command=self._on_sync_click, bg=ACCENT, fg="white", font=FONT_DEFAULT, relief="flat", bd=0, cursor="hand2", padx=12, pady=4).pack(side="left", padx=6, pady=6)
-        Button(btn_frame, text="Cancella catalogo", command=self.loader.clean_catalog, bg="#6c757d", fg="white", font=FONT_DEFAULT, relief="flat", bd=0, cursor="hand2", padx=12, pady=4).pack(side="left", padx=6, pady=6)
 
+
+        if DEV_MODE:
+            Button(btn_frame, text="Ricarica layout", command=self._reload_setup, bg="#17a2b8", fg="white", font=FONT_DEFAULT, relief="flat", bd=0, cursor="hand2", padx=12, pady=4).pack(side="left", padx=6, pady=6)
+            self.bind_all("<F5>", lambda e: self._reload_setup())
+            Button(btn_frame, text="Cancella catalogo", command=self.loader.clean_catalog, bg="#6c757d", fg="white",
+                   font=FONT_DEFAULT, relief="flat", bd=0, cursor="hand2", padx=12, pady=4).pack(side="left", padx=6,
+                                                                                                 pady=6)
 
         # =========================
         # PAGINE DINAMICHE
@@ -187,6 +197,21 @@ class MainUI(Tk):
             messagebox.showerror("Errore di rete", "Impossibile raggiungere Google Drive. Verifica la connessione.")
         #except Exception as e:
             #messagebox.showerror("Errore", f"Si è verificato un errore imprevisto: {e}")
+
+    def _reload_setup(self):
+        """Solo dev: ricarica _setup_app.py da disco senza riavviare l'app."""
+        try:
+            new_config = reload_setup_app()
+        except Exception as e:
+            messagebox.showerror("Errore reload", f"Impossibile ricaricare _setup_app.py:\n{e}")
+            return
+
+        self.renderer_service.assets = new_config["ASSETS_LIBRARY"]
+        self.renderer_service.render_dict = new_config["RENDER_DICT"]
+        self.renderer_service.default_style = new_config["STYLES"]
+        self.renderer.icon_cache = new_config["ASSETS_LIBRARY"]["Icons"]
+
+        #messagebox.showinfo("Reload", "_setup_app.py ricaricato con successo!")
 
     def _create_deck_runes(self):
         rune = CardDefinition(

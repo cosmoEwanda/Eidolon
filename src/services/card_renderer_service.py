@@ -1,4 +1,6 @@
 from pathlib import Path
+
+from src.domain.card_config import COST_DEFINITIONS, TOP_COST_KEYS, BOTTOM_COST_KEYS
 from src.render import RenderCard
 
 
@@ -44,7 +46,7 @@ class CardRendererService:
         # 2. Ciclo Dinamico sulle sezioni
         for section_key, section_data in layout.items():
             # Evitiamo di processare chiavi di configurazione che non sono "testi"
-            if section_key in ["orders_config", "art_config"] or not isinstance(section_data, dict): #da aggiungere art
+            if section_key in ["orders_config1", "orders_config2", "art_config"] or not isinstance(section_data, dict): #da aggiungere art
                 continue
 
             # Recuperiamo lo stile specifico della sezione (es. lo stile 'name' per la sezione 'name_config')
@@ -59,8 +61,16 @@ class CardRendererService:
                     self._draw_element(composer, content, rect, style)
 
         # 3. Altri elementi (Ordini e Art)
-        self._draw_orders(composer, card, layout.get("orders_config").get("elems"))
-        self._draw_art(composer, layout.get("art_config").get("elems").get("art"), card)
+        orders_cfg1 = layout.get("orders_config1", {}).get("elems")
+        orders_cfg2 = layout.get("orders_config2", {}).get("elems")
+        art_cfg = layout.get("art_config", {}).get("elems", {}).get("art")
+
+        if orders_cfg1:
+            self._draw_orders(composer, card, orders_cfg1)
+        if orders_cfg2:
+            self._draw_orders(composer, card, orders_cfg2)
+        if art_cfg:
+            self._draw_art(composer, art_cfg, card)
 
         # 4. Salvataggio
         out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -73,6 +83,7 @@ class CardRendererService:
         mapping = {
             "Name": card.name,
             "Construct": card.construct,
+            "Sinergy": card.sinergy,
             "Rarity": card.rarity,
             "Ability": card.ability
         }
@@ -90,24 +101,24 @@ class CardRendererService:
             return str(costs[key])
 
         # 4. Gruppi di costi (top_cost = G, bottom_cost = R)
+
         if key == "top_cost":
-            return self._format_cost_group(costs, ["GemmeG", "RuneG"])
+            return self._format_cost_group(costs, TOP_COST_KEYS)
         if key == "bottom_cost":
-            return self._format_cost_group(costs, ["RuneR", "GemmeR"])
+            return self._format_cost_group(costs, BOTTOM_COST_KEYS)
 
         return None
 
     @staticmethod
     def _format_cost_group(costs, cost_keys):
-        """Costruisce testo con icone inline tipo '[Gemme]×2 [Rune]×3'."""
-        if costs is None:
+        if not costs:
             return None
         parts = []
         for cost_key in cost_keys:
             val = costs.get(cost_key)
             if val is not None and val > 0:
-                icon_name = "Gemme" if "Gemme" in cost_key else "Rune"
-                parts.append(f"[{icon_name}]×{val}")
+                icon_name = COST_DEFINITIONS[cost_key]["mana"]
+                parts.append(f"{val}[{icon_name}]")
         return " ".join(parts) if parts else None
 
     def _draw_element(self, composer, text, rect, style):
@@ -135,7 +146,6 @@ class CardRendererService:
         # Verifica che esista la configurazione e che la carta abbia ordini
         if not orders_config or not card.get_attributes("orders"):
             return
-
         # Iteriamo sugli ordini effettivamente presenti sulla carta
         for i, ord_name in enumerate(card.get_attributes("orders")):
             # Recuperiamo il file dall'Asset Library passata al costruttore
