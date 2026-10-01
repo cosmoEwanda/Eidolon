@@ -10,7 +10,7 @@ from src.utils.setup_reloader import reload_setup_app
 DEV_MODE = os.environ.get("EIDOLON_DEV") == "1" or "--dev" in sys.argv
 
 # --- CONFIGURAZIONE AUTO-UPDATE ---
-VERSION = ("1.1.1")  # <--- Incrementa questo valore ogni volta che fai una nuova release
+VERSION = ("1.1.2")  # <--- Incrementa questo valore ogni volta che fai una nuova release
 REPO = "cosmoEwanda/Eidolon"  # <--- Sostituisci con i tuoi dati reali su GitHub
 
 
@@ -152,14 +152,14 @@ class MainUI(Tk):
         btn_frame = Frame(self, bg=BG_PRIMARY)
         btn_frame.pack(fill="x")
         Button(btn_frame, text="Aggiorna catalogo", command=self._on_sync_click, bg=ACCENT, fg="white", font=FONT_DEFAULT, relief="flat", bd=0, cursor="hand2", padx=12, pady=4).pack(side="left", padx=6, pady=6)
-
+        Button(btn_frame, text="Cancella catalogo", command=self.loader.clean_catalog, bg="#6c757d", fg="white",
+                   font=FONT_DEFAULT, relief="flat", bd=0, cursor="hand2", padx=12, pady=4).pack(side="left", padx=6,
+                                                                                                 pady=6)
 
         if DEV_MODE:
             Button(btn_frame, text="Ricarica layout", command=self._reload_setup, bg="#17a2b8", fg="white", font=FONT_DEFAULT, relief="flat", bd=0, cursor="hand2", padx=12, pady=4).pack(side="left", padx=6, pady=6)
             self.bind_all("<F5>", lambda e: self._reload_setup())
-            Button(btn_frame, text="Cancella catalogo", command=self.loader.clean_catalog, bg="#6c757d", fg="white",
-                   font=FONT_DEFAULT, relief="flat", bd=0, cursor="hand2", padx=12, pady=4).pack(side="left", padx=6,
-                                                                                                 pady=6)
+
 
         # =========================
         # PAGINE DINAMICHE
@@ -223,13 +223,13 @@ class MainUI(Tk):
         )
         rune.set_attributes("sinergy", "NULL")
 
-        existing = self.deck_service.find_by_name("!deck_rune!")
-        if existing:
-            deck_rune = existing
-            deck_rune.cards = {"__R__": 15}
-            deck_rune.description = rune_deck_description
-        else:
-            deck_rune = DeckDefinition(
+        existing_deck_rune = self.deck_service.find_by_name("!deck_rune!")
+        while existing_deck_rune:
+            print(existing_deck_rune.name)
+            self.deck_service.delete_deck_service(existing_deck_rune.id)
+            existing_deck_rune = self.deck_service.find_by_name("!deck_rune!")
+
+        deck_rune = DeckDefinition(
                 name="!deck_rune!",
                 cards={"__R__": 15},
                 description=rune_deck_description
