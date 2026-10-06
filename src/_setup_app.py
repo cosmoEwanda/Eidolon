@@ -19,7 +19,7 @@ COMMON_STYLE = TextBoxStyle(
 )
 
 STYLES = {
-    "name": replace(COMMON_STYLE, font_size=55),
+    "name": replace(COMMON_STYLE, font_size=60, align="left"),
     "construct": replace(COMMON_STYLE, font_size=50),
     "sinergy": replace(COMMON_STYLE, font_size=50, align="center"),
     "stats": replace(COMMON_STYLE, align="center"),
@@ -52,8 +52,8 @@ def get_base_layout():
             "style" : STYLES["name"],
             "elems" : {
                 "Name" : {
-                    "pos": (300, 30),
-                    "dim": (530, 95)}
+                    "pos": (300, 40),
+                    "dim": (550, 75)}
                 }
             },
         "rarity_config" : {
@@ -76,7 +76,7 @@ def get_base_layout():
             "style" : STYLES["construct"],
             "elems" : {
                 "Construct" : {
-                    "pos": (300, 140),
+                    "pos": (300, 135),
                     "dim": (500, 70)}
                 }
             },
@@ -114,7 +114,7 @@ def get_base_layout():
                     "pos": (90, 35),
                     "dim": (210, 80)},
                 "bottom_cost": {
-                    "pos": (40, 1315),
+                    "pos": (50, 1315),
                     "dim": (200, 60)},
             }
         },
