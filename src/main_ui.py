@@ -248,8 +248,10 @@ class MainUI(Tk):
 # =========================================================
 
 if __name__ == "__main__":
+    from basic_config.paths import invalidate_cache_if_updated
     check_update()
-    migrate_deck_costs(DECK_DIR, JSON_DIR)
+    invalidate_cache_if_updated(VERSION)
+    #migrate_deck_costs(DECK_DIR, JSON_DIR)
     app = MainUI()
     app.mainloop()
 

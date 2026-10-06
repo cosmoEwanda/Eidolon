@@ -7,6 +7,7 @@ from src.basic_config._paths_composer import (
 )
 import sys
 from tkinter import messagebox
+import shutil
 
 FONT_PATH = "C:/Windows/Fonts/Arial.ttf"
 
@@ -88,3 +89,24 @@ COST_SHEET = (
     "100c4Gp3yjAmLCyOeEHHjHPsrNtzn0xS--xkqfDNuBdQ/"
     "export?format=csv&gid=1924022885"
 )
+
+# File che tiene traccia dell'ultima versione che ha renderizzato
+VERSION_TRACKER = APP_DATA / "last_rendered_version.txt"
+
+def invalidate_cache_if_updated(current_version: str):
+    """Se la versione dell'app è cambiata, elimina i vecchi render locali."""
+    last_version = ""
+    if VERSION_TRACKER.exists():
+        try:
+            last_version = VERSION_TRACKER.read_text(encoding="utf-8").strip()
+        except Exception:
+            pass
+
+    if last_version != current_version:
+        # Pulisce la cartella delle immagini renderizzate
+        if IMAGES_DIR.exists():
+            shutil.rmtree(IMAGES_DIR, ignore_errors=True)
+            IMAGES_DIR.mkdir(parents=True, exist_ok=True)
+
+        # Aggiorna il tracker con la versione corrente
+        VERSION_TRACKER.write_text(current_version, encoding="utf-8")

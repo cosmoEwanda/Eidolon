@@ -5,6 +5,7 @@ from tkinter import filedialog
 from pathlib import Path
 
 
+
 def get_app_data_folder() -> Path:
     """Restituisce la cartella in LocalAppData, creandola se manca."""
     path = Path(os.environ["LOCALAPPDATA"]) / "Eidolon"
