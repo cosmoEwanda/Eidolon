@@ -112,9 +112,10 @@ class DeckWindowContainer(Frame):
         self.pages["decks"].reload()
         self.show("decks")
 
-    def _print_preview_deck(self, deck, out_path = None):
+    def _print_preview_deck(self, deck, out_path = None, dimension=(59, 86)):
+        width, height = dimension
         try:
-            pdf = self.print_service.build_pdf_for_deck(deck, output_path=out_path)
+            pdf = self.print_service.build_pdf_for_deck(deck, output_path=out_path, card_w_mm=width, card_h_mm=height)
             self.print_service.preview(pdf)
         except PdfInUseError:
             messagebox.showwarning(

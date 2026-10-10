@@ -17,20 +17,11 @@ class PdfInUseError(RuntimeError):
 
 class DeckPrintService:
     """
-    Genera un PDF impaginato con le immagini delle carte del deck.
-    - Anteprima: apri il PDF col viewer default
-    - Stampa (Windows): os.startfile(pdf, "print")
+    Genera un PDF impaginato con le immagini delle carte del deck a dimensioni fisiche fisse.
     """
 
     def __init__(self, image_provider):
-        """
-        image_provider deve esporre:
-            load_image_by_id(card_id) -> Path | None
-        """
         self.image_provider = image_provider
-
-
-    # -------------------------------------------------------------
 
     def build_pdf_for_deck(
         self,
@@ -38,42 +29,48 @@ class DeckPrintService:
         output_path: Optional[Path] = None,
         cards_per_row: int = 3,
         rows_per_page: int = 3,
-        margin_mm: float = 10.0,
-        gap_mm: float = 2.0
+        card_w_mm: float = 59.0,  # 63x88 per Standard (Magic/Pokemon), 59x86 per Yu-Gi-Oh!
+        card_h_mm: float = 86.0,
+        gap_mm: float = 2.0,
     ) -> Path:
-        """
-        deck.cards: dict[str, int]  (id -> quantity)
-        """
         card_ids = self._expand_deck_ids(deck)
 
         if output_path is None:
             output_path = Path(tempfile.gettempdir()) / f"deck_{self._safe_filename(deck.name)}.pdf"
 
-        # Fail fast se il PDF è aperto / non scrivibile
         self._ensure_writable(output_path)
 
         page_w, page_h = A4
-
         mm = 72.0 / 25.4
-        margin = margin_mm * mm
-        gap = gap_mm * mm
 
         cols = cards_per_row
         rows = rows_per_page
 
-        usable_w = page_w - 2 * margin - (cols - 1) * gap
-        usable_h = page_h - 2 * margin - (rows - 1) * gap
+        card_w = card_w_mm * mm
+        card_h = card_h_mm * mm
+        gap = gap_mm * mm
 
-        cell_w = usable_w / cols
-        cell_h = usable_h / rows
+        # Calcola l'ingombro totale della griglia di carte
+        total_grid_w = (cols * card_w) + ((cols - 1) * gap)
+        total_grid_h = (rows * card_h) + ((rows - 1) * gap)
+
+        if total_grid_w > page_w or total_grid_h > page_h:
+            raise ValueError(
+                f"La griglia richiesta ({total_grid_w / mm:.1f}x{total_grid_h / mm:.1f} mm) "
+                f"eccede il formato A4 ({page_w / mm:.1f}x{page_h / mm:.1f} mm). "
+                f"Riduci gap_mm o verifica le dimensioni delle carte."
+            )
+
+        # Centra la griglia nella pagina A4
+        margin_x = (page_w - total_grid_w) / 2.0
+        margin_y = (page_h - total_grid_h) / 2.0
 
         c = canvas.Canvas(str(output_path), pagesize=A4)
 
         index = 0
         per_page = cols * rows
-
-        # Cache ImageReader per path: evita decode ripetuti (molto importante con PNG 940x1410)
         img_cache: Dict[str, Tuple[ImageReader, int, int]] = {}
+
         while index < len(card_ids):
             for slot in range(per_page):
                 if index >= len(card_ids):
@@ -85,32 +82,27 @@ class DeckPrintService:
                 r = slot // cols
                 col = slot % cols
 
-                x = margin + col * (cell_w + gap)
-                y = page_h - margin - (r + 1) * cell_h - r * gap
+                # Coordinata X e Y (ReportLab ha l'origine in basso a sinistra)
+                x = margin_x + col * (card_w + gap)
+                y = page_h - margin_y - (r + 1) * card_h - r * gap
 
                 img_path = self.image_provider.load_image_by_id(cid)
                 if img_path and Path(img_path).exists():
-                    self._draw_image_fit_cached(c, Path(img_path), x, y, cell_w, cell_h, img_cache)
+                    self._draw_image_fit_cached(c, Path(img_path), x, y, card_w, card_h, img_cache)
                 else:
-                    c.rect(x, y, cell_w, cell_h, stroke=1, fill=0)
-                    c.drawString(x + 6, y + cell_h - 14, "Missing image:")
-                    c.drawString(x + 6, y + cell_h - 30, str(cid))
+                    c.rect(x, y, card_w, card_h, stroke=1, fill=0)
+                    c.drawString(x + 6, y + card_h - 14, "Missing image:")
+                    c.drawString(x + 6, y + card_h - 30, str(cid))
 
             c.showPage()
 
         c.save()
         return output_path
 
-    # -------------------------------------------------------------
-
     def preview(self, pdf_path: Path):
         self._open_file(pdf_path)
 
     def print_pdf(self, pdf_path: Path):
-        """
-        Windows: startfile(print).
-        Altrove: apri il PDF e l'utente stampa dal viewer.
-        """
         try:
             if os.name == "nt":
                 os.startfile(str(pdf_path), "print")
@@ -119,17 +111,10 @@ class DeckPrintService:
         except Exception:
             self._open_file(pdf_path)
 
-    # -------------------- helpers --------------------
-
     def _ensure_writable(self, path: Path):
-        """
-        Su Windows un PDF aperto spesso non è rinominabile/sovrascrivibile.
-        Questo check fallisce subito e permette alla UI di mostrare messagebox.
-        """
         path.parent.mkdir(parents=True, exist_ok=True)
 
         if not path.exists():
-            # Prova a creare e cancellare un file vuoto per verificare permessi
             try:
                 path.touch(exist_ok=False)
                 path.unlink(missing_ok=True)
@@ -137,14 +122,11 @@ class DeckPrintService:
                 raise PdfInUseError(f"Impossibile creare il PDF in: {path}") from e
             return
 
-        # Se esiste già: prova un "rename roundtrip"
         tmp = path.with_suffix(path.suffix + ".locktest")
         try:
-            # Se è aperto, spesso qui esplode con PermissionError
             path.replace(tmp)
             tmp.replace(path)
         except PermissionError as e:
-            # Ripristino best-effort se qualcosa è rimasto in mezzo
             try:
                 if tmp.exists() and not path.exists():
                     tmp.replace(path)
@@ -181,10 +163,6 @@ class DeckPrintService:
         h: float,
         cache: Dict[str, Tuple[ImageReader, int, int]],
     ):
-        """
-        Disegna l'immagine adattandola al riquadro senza distorcerla.
-        Usa cache per evitare decode ripetuti.
-        """
         key = str(img_path)
         entry = cache.get(key)
         if entry is None:
@@ -197,14 +175,10 @@ class DeckPrintService:
         if iw <= 0 or ih <= 0:
             return
 
-        scale = min(w / iw, h / ih)
-        dw = iw * scale
-        dh = ih * scale
-
-        dx = x + (w - dw) / 2
-        dy = y + (h - dh) / 2
-
-        c.drawImage(img, dx, dy, dw, dh, preserveAspectRatio=True, anchor="c")
+        # Disegna l'immagine forzata al rettangolo esatto della carta
+        # Se preferisci ritagliare l'eventuale bleed invece di forzare le proporzioni,
+        # qui puoi mantenere preserveAspectRatio=True
+        c.drawImage(img, x, y, width=w, height=h, preserveAspectRatio=False)
 
     def _open_file(self, path: Path):
         try:
