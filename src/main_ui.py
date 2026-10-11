@@ -10,7 +10,7 @@ from src.utils.setup_reloader import reload_setup_app
 DEV_MODE = os.environ.get("EIDOLON_DEV") == "1" or "--dev" in sys.argv
 
 # --- CONFIGURAZIONE AUTO-UPDATE ---
-VERSION = ("1.1.4")  # <--- Incrementa questo valore ogni volta che fai una nuova release
+VERSION = ("1.1.5")  # <--- Incrementa questo valore ogni volta che fai una nuova release
 REPO = "cosmoEwanda/Eidolon"  # <--- Sostituisci con i tuoi dati reali su GitHub
 
 
@@ -248,7 +248,7 @@ class MainUI(Tk):
 # =========================================================
 
 if __name__ == "__main__":
-    from basic_config.paths import invalidate_cache_if_updated
+    from src.basic_config.paths import invalidate_cache_if_updated
     check_update()
     invalidate_cache_if_updated(VERSION)
     #migrate_deck_costs(DECK_DIR, JSON_DIR)
